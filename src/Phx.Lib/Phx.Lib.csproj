@@ -7,11 +7,13 @@
 -->
 
 <Project Sdk="Microsoft.NET.Sdk">
-<Import Project="../../resources/build/PhxLib.common.props" Condition="Exists('../../resources/build/PhxLib.common.props')" />
-
+    <Import Project="../../resources/build/PhxLib.common.props" Condition="Exists('../../resources/build/PhxLib.common.props')" />
+    <Import Project="../../resources/build/NugetProperties.props" Condition="Exists('../../resources/build/NugetProperties.props')"/>
     <PropertyGroup>
-        <Version>$(PhxLibMajorVersion).0.0</Version>
-        <Description>Test verification and execution utilities.</Description>
+        <Version>$(PhxLibMajorVersion).0.1</Version>
+        <Description>PHX Lib core utilities and extensions.</Description>
+        <PackageProjectUrl>https://github.com/StarCruiseStudios/PhxLib</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/StarCruiseStudios/PhxLib</RepositoryUrl>
     </PropertyGroup>
 
     <Target Name="EnsureBuildFileImports" BeforeTargets="PrepareForBuild">
