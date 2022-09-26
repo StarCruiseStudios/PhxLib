@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{510E587F-6E7C-48AD-8644-85AC33E69926}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phx.Lib", "src\Phx.Lib\Phx.Lib.csproj", "{FD791488-0074-41D0-B9BB-4D403842A719}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phx.Lib.Tests", "src\Phx.Lib.Tests\Phx.Lib.Tests.csproj", "{F989BDEF-C2B9-4997-BF25-014B85482157}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FD791488-0074-41D0-B9BB-4D403842A719}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD791488-0074-41D0-B9BB-4D403842A719}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD791488-0074-41D0-B9BB-4D403842A719}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD791488-0074-41D0-B9BB-4D403842A719}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F989BDEF-C2B9-4997-BF25-014B85482157}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F989BDEF-C2B9-4997-BF25-014B85482157}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F989BDEF-C2B9-4997-BF25-014B85482157}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F989BDEF-C2B9-4997-BF25-014B85482157}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FD791488-0074-41D0-B9BB-4D403842A719} = {510E587F-6E7C-48AD-8644-85AC33E69926}
+		{F989BDEF-C2B9-4997-BF25-014B85482157} = {510E587F-6E7C-48AD-8644-85AC33E69926}
+	EndGlobalSection
+EndGlobal
