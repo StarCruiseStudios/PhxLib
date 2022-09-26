@@ -6,16 +6,10 @@
 //  </copyright>
 // -----------------------------------------------------------------------------
 
-namespace Phx.Lang
-{
-    /// <summary>
-    ///     Defines a method used to retrieve the user facing display string representation of an instance.
-    /// </summary>
-    public interface IDisplay
-    {
-        /// <summary>
-        ///     Returns a user facing display string representation of an instance.
-        /// </summary>
+namespace Phx.Lang {
+    /// <summary> Defines a method used to retrieve the user facing display string representation of an instance. </summary>
+    public interface IDisplay {
+        /// <summary> Returns a user facing display string representation of an instance. </summary>
         /// <returns> A string representing the instance that can be used for displaying to the end user. </returns>
         string ToDisplay();
     }

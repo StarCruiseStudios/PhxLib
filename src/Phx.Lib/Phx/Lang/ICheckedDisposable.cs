@@ -6,19 +6,13 @@
 //  </copyright>
 // -----------------------------------------------------------------------------
 
-using System;
+namespace Phx.Lang {
+    using System;
 
-namespace Phx.Lang
-{
-    /// <summary>
-    ///     Represents an IDisposable that can be checked for its disposed state.
-    /// </summary>
-    public interface ICheckedDisposable : IDisposable
-    {
-        /// <summary>
-        ///     Gets a value that indicates whether the object is disposed.
-        /// </summary>
-        /// <value> <c>true</c> if the instance has been disposed, otherwise <c>false</c>. </value>
+    /// <summary> Represents an IDisposable that can be checked for its disposed state. </summary>
+    public interface ICheckedDisposable : IDisposable {
+        /// <summary> Gets a value that indicates whether the object is disposed. </summary>
+        /// <value> <c> true </c> if the instance has been disposed, otherwise <c> false </c>. </value>
         public bool IsDisposed { get; }
     }
 }

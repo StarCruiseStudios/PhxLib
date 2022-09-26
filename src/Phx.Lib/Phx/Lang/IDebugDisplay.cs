@@ -6,23 +6,16 @@
 //  </copyright>
 // -----------------------------------------------------------------------------
 
-namespace Phx.Lang
-{
-    /// <summary>
-    /// Defines a method used to retrieve the programmer facing debug display
-    /// string representation of an instance.
-    /// </summary>
-    public interface IDebugDisplay
-    {
+namespace Phx.Lang {
+    /// <summary> Defines a method used to retrieve the programmer facing debug display string representation of an instance. </summary>
+    public interface IDebugDisplay {
         /// <summary>
-        ///     The value to use inside of the <see cref="DebuggerDisplayAttribute"/> to invoke the
-        ///     <see cref="IDebugDisplay.ToDebugDisplay"/> method.
+        ///     The value to use inside of the <see cref="DebuggerDisplayAttribute" /> to invoke the
+        ///     <see cref="IDebugDisplay.ToDebugDisplay" /> method.
         /// </summary>
         public const string DEBUGGER_DISPLAY_STRING = "{ToDebugDisplay(),nq}";
 
-        /// <summary>
-        ///     Returns a programming facing debug display string representation of the instance.
-        /// </summary>
+        /// <summary> Returns a programming facing debug display string representation of the instance. </summary>
         /// <returns> A string representing the instance that can be used for debuging and diagnostics. </returns>
         public string ToDebugDisplay();
     }

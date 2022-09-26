@@ -6,26 +6,21 @@
 //  </copyright>
 // -----------------------------------------------------------------------------
 
-using System;
+namespace Phx.Lang {
+    using System;
 
-namespace Phx.Lang
-{
     [Serializable]
     /// <summary>
     ///     A type that represents no type and holds no information.
     /// </summary>
-    public sealed class Unit
-    {
-        /// <summary>
-        ///     The <see cref="Unit"/> instance.
-        /// </summary>
-        public static Unit UNIT = new Unit();
+    public sealed class Unit {
+        /// <summary> The <see cref="Unit" /> instance. </summary>
+        public static Unit UNIT = new();
 
         private Unit() { }
 
-        /// <inheritdoc/>
-        public override string ToString()
-        {
+        /// <inheritdoc />
+        public override string ToString() {
             return "[Unit]";
         }
     }
