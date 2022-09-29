@@ -6,12 +6,8 @@
 //  </copyright>
 // -----------------------------------------------------------------------------
 
-using static Phx.Lang.Unit;
-
 namespace Phx.Lang {
     using System;
-    using System.Linq;
-    using System.Runtime.InteropServices;
     using System.Text;
 
     /// <summary> Provides utilities for working with the <see cref="string" /> class. </summary>
@@ -26,27 +22,46 @@ namespace Phx.Lang {
         /// </remarks>
         public const string EmptyString = "";
 
+        /// <summary> Returns the input string with the first character uppercase. </summary>
+        /// <remarks>
+        ///     This only affects strings that begin with a letter. Strings that begin with non-letter characters will not be
+        ///     affected.
+        /// </remarks>
+        /// <param name="input"> The input string. </param>
+        /// <returns> The input string with the first character uppercase. </returns>
         public static string StartUppercase(string input) {
             return char.ToUpper(input[0]) + input[1..];
         }
 
+        /// <summary> Returns the input string with the first character lowercase. </summary>
+        /// <remarks>
+        ///     This only affects strings that begin with a letter. Strings that begin with non-letter characters will not be
+        ///     affected.
+        /// </remarks>
+        /// <param name="input"> The input string. </param>
+        /// <returns> The input string with the first character lowercase. </returns>
         public static string StartLowercase(string input) {
             return char.ToLower(input[0]) + input[1..];
         }
 
+        /// <summary> Removes the leading I typically used to prefix an interface typename. </summary>
+        /// <remarks>
+        ///     This will only remove the "I" as a prefix and will not affect words that simply begin with "I". e.g. ICar =>
+        ///     Car, Car => Car, IInput => Input, Input => Input
+        /// </remarks>
+        /// <param name="input"> The input string. </param>
+        /// <returns> The output string with a leading I removed. </returns>
         public static string RemoveLeadingI(string input) {
             // If only one "I" is found, check if the second character is
-            // capital to avoid false positives on words that start with I. We
-            // only want to remove the "I" interface prefix.
-            // e.g. ICar => Car, Car => Car, IInput => Input, Input => Input
-            bool hasLeadingI = input.StartsWith("II") 
+            // capital to avoid false positives on words that start with I.
+            bool hasLeadingI = input.StartsWith("II")
                     || (input.StartsWith("I") && input.Length > 2 && char.IsUpper(input[1]));
-            
+
             return hasLeadingI
                     ? input[1..]
                     : input;
         }
-        
+
         /// <summary> Escapes a string for use as verbatim string, replacing all " characters with "". </summary>
         /// <param name="verbatimString"> The string to escape. </param>
         /// <returns> The escaped string. </returns>

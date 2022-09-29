@@ -281,6 +281,40 @@ string str = obj.ToStringSafe();
 
 troubleSomeObject.ToDebugDisplayString();
 ```
+```csharp
+// Utilities for inline string building.
+var newName = BuildString(sb => {
+    sb.Append("First");
+    sb.Append("Last");
+});
+```
+```csharp
+// Extension methods for manipulating and escaping strings.
+var uppercase = "hello".StartUppercase();
+var lowercase = "Hello".StartLowercase();
+var implClassName = "IMyInterface".RemoveLeadingI();
+
+var verbatimString = "\"Hello\"".EscapeVerbatimString();
+var unescapedVerbatimString = verbatimString.UnescapeVerbatimString();
+
+var quoteString = "\"Hello\"".EscapeStringQuotes();
+var unescapedQuoteString = quoteString.UnescapeStringQuotes();
+```
+```csharp
+// String case conversions
+var constantName = "someVariableName".FromCamelCase().ToCapsCase();
+
+if (inputValue.FromPascalCase().IsValid) {
+    // ...
+}
+
+// Conversions and validations support:
+// * camelCase
+// * CAPS_CASE
+// * kebab-case
+// * PascalCase
+// * snake_case
+```
 
 ---
 
