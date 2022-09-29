@@ -11,6 +11,7 @@ using static Phx.Lang.Unit;
 namespace Phx.Lang {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using Phx.Dev;
 
     /// <summary> Represents the successful or unsuccessful result of an operation. </summary>
     /// <typeparam name="T"> The type of the value returned on operation success. </typeparam>
@@ -219,52 +220,6 @@ namespace Phx.Lang {
         /// <param name="error"> The error. </param>
         public static Result<T, Exception> Failure<T>(Exception error) {
             return new Failure<T, Exception>(error);
-        }
-
-        /// <summary>
-        ///     Returns the result value contained in the <see cref="Result{T, E}" /> if it was successful, otherwise throws
-        ///     the exception contained by the failure result.
-        /// </summary>
-        /// <typeparam name="T"> The type of the value returned on operation success. </typeparam>
-        /// <typeparam name="E"> The type of the value returned on operation failure. </typeparam>
-        /// <param name="result"> The <see cref="Result{T, E}" /> instance the check is performed on. </param>
-        /// <returns> A <typeparamref name="T" /> instance retrieved from the result. </returns>
-        /// <exception> <typeparamref name="E" /> thrown if the result is a failure. </exception>
-        [SuppressMessage("General", "RCS1079", Justification = "Unreachable default case.")]
-        public static T OrThrowException<T, E>(this Result<T, E> result) where E : Exception {
-            return result switch {
-                Success<T, E> s => s.Result,
-                Failure<T, E> f => throw f.Error,
-#pragma warning disable RCS1140
-                // Add exception to documentation comment: NotSupportedException should never be thrown.
-                _ => throw new NotImplementedException(result.GetType().AssemblyQualifiedName),
-#pragma warning restore RCS1140
-            };
-        }
-
-        /// <summary>
-        ///     Returns the result value contained in the <see cref="Result{T, E}" /> if it was successful, otherwise throws
-        ///     the an exception containing the error code from the failure result.
-        /// </summary>
-        /// <typeparam name="T"> The type of the value returned on operation success. </typeparam>
-        /// <typeparam name="E"> The type of the value returned on operation failure. </typeparam>
-        /// <param name="result"> The <see cref="Result{T, E}" /> instance the check is performed on. </param>
-        /// <param name="message"> The message to provide to the new exception. </param>
-        /// <returns> A <typeparamref name="T" /> instance retrieved from the result. </returns>
-        /// <exception cref="InvalidOperationException"> thrown if the result is a failure. </exception>
-        [SuppressMessage("General", "RCS1079", Justification = "Unreachable default case.")]
-        public static T OrThrowError<T, E>(
-                this Result<T, E> result,
-                string message = "The operation failed with an unexpected result"
-        ) where E : Enum {
-            return result switch {
-                Success<T, E> s => s.Result,
-                Failure<T, E> f => throw new InvalidOperationException($"[{f.Error}] {message}"),
-#pragma warning disable RCS1140
-                // Add exception to documentation comment: NotSupportedException should never be thrown.
-                _ => throw new NotImplementedException(result.GetType().AssemblyQualifiedName),
-#pragma warning restore RCS1140
-            };
         }
     }
 

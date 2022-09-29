@@ -73,7 +73,7 @@ namespace Phx.Lang {
 
         /// <summary>
         ///     Executes the given <paramref name="action" /> on each of the given
-        ///     <paramref name="items", and throws all
+        ///     <paramref name="items"/>, and throws all
         ///               resulting exceptions as an
         ///     <see cref="AggregateException" />.
         /// </summary>

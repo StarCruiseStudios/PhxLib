@@ -12,7 +12,7 @@ namespace Phx.Lang {
         /// <summary> Provides a null-forgiving null value of the given type. </summary>
         /// <typeparam name="T"> The type of value that will be lateinit-ed. </typeparam>
         /// <returns> A late init value. </returns>
-        public static T LateInit<T>() where T : class {
+        public static T Init<T>() where T : class {
             return null!;
         }
     }

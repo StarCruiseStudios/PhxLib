@@ -9,7 +9,9 @@
 using static Phx.Lang.Unit;
 
 namespace Phx.Lang {
+    using System;
     using System.Linq;
+    using System.Runtime.InteropServices;
     using System.Text;
 
     /// <summary> Provides utilities for working with the <see cref="string" /> class. </summary>
@@ -24,52 +26,27 @@ namespace Phx.Lang {
         /// </remarks>
         public const string EmptyString = "";
 
-        /// <summary> Converts a string from caps case to pascal case. </summary>
-        /// <remarks>
-        ///     A caps case string, consists of only capital letters, numbers and underscore. A pascal case string, consists
-        ///     of only letters and numbers and the first letter of each word is capitalized.
-        /// </remarks>
-        /// <param name="capsString"> The caps string. </param>
-        /// <returns>
-        ///     A <see cref="Success{string, Unit}" /> containing the pascal case representation of the given string, or a
-        ///     <see cref="Failure{string, Unit}" /> if the input string is not caps case.
-        /// </returns>
-        public static Result<string, Unit> CapsToPascalCase(string capsString) {
-            if (!IsCapsCase(capsString)) {
-                return Result.Failure<string, Unit>(UNIT);
-            }
-
-            var sb = new StringBuilder();
-
-            bool nextIsCaps = true;
-            foreach (char c in capsString) {
-                if (c == '_') {
-                    nextIsCaps = true;
-                } else if (char.IsDigit(c)) {
-                    _ = sb.Append(c);
-                    nextIsCaps = true;
-                } else if (nextIsCaps) {
-                    _ = sb.Append(c);
-                    nextIsCaps = false;
-                } else {
-                    _ = sb.Append(char.ToLowerInvariant(c));
-                }
-            }
-
-            return Result.Success<string, Unit>(sb.ToString());
+        public static string StartUppercase(string input) {
+            return char.ToUpper(input[0]) + input[1..];
         }
 
-        /// <summary> Determines whether the specified string is caps case. </summary>
-        /// <remarks> A caps case string, consists of only capital letters, numbers and underscore. </remarks>
-        /// <param name="capsString"> The caps string. </param>
-        /// <returns> <c> true </c> if the specified string is caps case; otherwise, <c> false </c>. </returns>
-        public static bool IsCapsCase(string capsString) {
-            return capsString.All(
-                    c => c == '_'
-                            || char.IsDigit(c)
-                            || (char.IsLetter(c) && char.IsUpper(c)));
+        public static string StartLowercase(string input) {
+            return char.ToLower(input[0]) + input[1..];
         }
 
+        public static string RemoveLeadingI(string input) {
+            // If only one "I" is found, check if the second character is
+            // capital to avoid false positives on words that start with I. We
+            // only want to remove the "I" interface prefix.
+            // e.g. ICar => Car, Car => Car, IInput => Input, Input => Input
+            bool hasLeadingI = input.StartsWith("II") 
+                    || (input.StartsWith("I") && input.Length > 2 && char.IsUpper(input[1]));
+            
+            return hasLeadingI
+                    ? input[1..]
+                    : input;
+        }
+        
         /// <summary> Escapes a string for use as verbatim string, replacing all " characters with "". </summary>
         /// <param name="verbatimString"> The string to escape. </param>
         /// <returns> The escaped string. </returns>
@@ -77,11 +54,34 @@ namespace Phx.Lang {
             return verbatimString.Replace("\"", "\"\"");
         }
 
-        /// <summary> Escapes the double quotes within a string, replacing all characters with \". </summary>
+        /// <summary> Unescapes a string used as verbatim string, replacing all "" characters with ". </summary>
+        /// <param name="verbatimString"> The string to unescape. </param>
+        /// <returns> The unescaped string. </returns>
+        public static string UnescapeVerbatimString(string verbatimString) {
+            return verbatimString.Replace("\"\"", "\"");
+        }
+
+        /// <summary> Escapes the double quotes within a string, replacing all " characters with \". </summary>
         /// <param name="quoteString"> The string to escape. </param>
         /// <returns> The escaped string. </returns>
         public static string EscapeStringQuotes(string quoteString) {
             return quoteString.Replace("\"", "\\\"");
+        }
+
+        /// <summary> Unescapes the double quotes within a string, replacing all \" characters with ". </summary>
+        /// <param name="quoteString"> The string to unescape. </param>
+        /// <returns> The unescaped string. </returns>
+        public static string UnescapeStringQuotes(string quoteString) {
+            return quoteString.Replace("\\\"", "\"");
+        }
+
+        /// <summary> Builds a new string using the given action. </summary>
+        /// <param name="buildString"> The action containing the steps to build the string. </param>
+        /// <returns> The newly constructed string. </returns>
+        public static string BuildString(Action<StringBuilder> buildString) {
+            var stringBuilder = new StringBuilder();
+            buildString(stringBuilder);
+            return stringBuilder.ToString();
         }
     }
 }
