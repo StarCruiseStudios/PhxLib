@@ -15,39 +15,6 @@ namespace Phx.Lang {
 
     /// <summary> An instance used to convert strings from one casing to another. </summary>
     public sealed class StringCasingConverter {
-        /// <summary> Enumerates the supported string casings. </summary>
-        public enum StringCasing {
-            /// <summary>
-            ///     Only alphanumeric characters. Each word starts with an uppercase letter. String starts with a lowercase
-            ///     letter.
-            /// </summary>
-            Camel,
-
-            /// <summary>
-            ///     Only alphanumeric characters and underscores. All letters uppercase. Words separated by a single underscore.
-            ///     Leading underscores are ignored. String starts with a letter.
-            /// </summary>
-            Caps,
-
-            /// <summary>
-            ///     Only alphanumeric characters and hyphens. All letters lowercase. Words separated by a single hyphen. String
-            ///     starts with a letter.
-            /// </summary>
-            Kebab,
-
-            /// <summary>
-            ///     Only alphanumeric characters. Each word starts with an uppercase letter. String starts with an uppercase
-            ///     letter.
-            /// </summary>
-            Pascal,
-
-            /// <summary>
-            ///     Only alphanumeric characters and underscores. All letters lowercase. Words separated by a single underscore.
-            ///     Leading underscores are ignored. String starts with a letter.
-            /// </summary>
-            Snake
-        }
-
         /// <summary> Gets whether the input string is a valid representation of the input string casing. </summary>
         public bool IsValid { get; }
 
@@ -215,7 +182,7 @@ namespace Phx.Lang {
                 words.Add(sb.ToString());
             }
 
-            if (words.Count == 0 || !char.IsLetter(words[0][0])) {
+            if (words.Count > 0 && !char.IsLetter(words[0][0])) {
                 return Invalid(originalString, StringCasing.Camel);
             }
 
@@ -254,7 +221,7 @@ namespace Phx.Lang {
                 words.Add(sb.ToString());
             }
 
-            if (words.Count == 0 || !char.IsLetter(words[0][0])) {
+            if (words.Count > 0 && !char.IsLetter(words[0][0])) {
                 return Invalid(originalString, StringCasing.Caps);
             }
 
@@ -292,7 +259,7 @@ namespace Phx.Lang {
                 words.Add(sb.ToString());
             }
 
-            if (words.Count == 0 || !char.IsLetter(words[0][0])) {
+            if (words.Count > 0 && !char.IsLetter(words[0][0])) {
                 return Invalid(originalString, StringCasing.Kebab);
             }
 
@@ -321,7 +288,11 @@ namespace Phx.Lang {
                         return Invalid(originalString, StringCasing.Pascal);
                     }
                 } else if (char.IsLetterOrDigit(c)) {
-                    sb.Append(c);
+                    if (words.Count == 0 && sb.Length == 0) {
+                        return Invalid(originalString, StringCasing.Pascal);
+                    } else {
+                        sb.Append(c);
+                    }
                 } else {
                     return Invalid(originalString, StringCasing.Pascal);
                 }
@@ -331,7 +302,7 @@ namespace Phx.Lang {
                 words.Add(sb.ToString());
             }
 
-            if (words.Count == 0 || !char.IsLetter(words[0][0])) {
+            if (words.Count > 0 && !char.IsLetter(words[0][0])) {
                 return Invalid(originalString, StringCasing.Pascal);
             }
 
@@ -370,7 +341,7 @@ namespace Phx.Lang {
                 words.Add(sb.ToString());
             }
 
-            if (words.Count == 0 || !char.IsLetter(words[0][0])) {
+            if (words.Count > 0 && !char.IsLetter(words[0][0])) {
                 return Invalid(originalString, StringCasing.Snake);
             }
 

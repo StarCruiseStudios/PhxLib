@@ -73,7 +73,7 @@ namespace Phx.Lang {
         ///     A StringCasingConverter that can be used to convert to another casing or to check if the input string is a
         ///     valid representation of the input casing.
         /// </returns>
-        public static StringCasingConverter FromCase(this string input, StringCasingConverter.StringCasing casing) =>
+        public static StringCasingConverter FromCase(this string input, StringCasing casing) =>
                 StringCasingConverter.FromCase(casing, input);
         
         /// <summary>

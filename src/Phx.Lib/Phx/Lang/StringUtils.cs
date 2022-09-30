@@ -30,6 +30,9 @@ namespace Phx.Lang {
         /// <param name="input"> The input string. </param>
         /// <returns> The input string with the first character uppercase. </returns>
         public static string StartUppercase(string input) {
+            if (string.IsNullOrEmpty(input)) {
+                return input;
+            }
             return char.ToUpper(input[0]) + input[1..];
         }
 
@@ -41,6 +44,9 @@ namespace Phx.Lang {
         /// <param name="input"> The input string. </param>
         /// <returns> The input string with the first character lowercase. </returns>
         public static string StartLowercase(string input) {
+            if (string.IsNullOrEmpty(input)) {
+                return input;
+            }
             return char.ToLower(input[0]) + input[1..];
         }
 
