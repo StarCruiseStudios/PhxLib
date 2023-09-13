@@ -6,9 +6,10 @@
 //  </copyright>
 // -----------------------------------------------------------------------------
 
-namespace Phx.Debug {
-    /// <summary> Defines a method used to retrieve the programmer facing debug display string representation of an instance. </summary>
-    public interface IDebugDisplay {
+namespace Phx.Debug
+{
+    public static class DebugDisplay
+    {
         /// <summary>
         ///     The value to use inside of the <see cref="System.Diagnostics.DebuggerDisplayAttribute" /> to invoke the
         ///     <see cref="IDebugDisplay.ToDebugDisplay" /> method.
@@ -25,7 +26,11 @@ namespace Phx.Debug {
         /// </code>
         /// </example>
         public const string DEBUGGER_DISPLAY_STRING = "{ToDebugDisplay(),nq}";
+    }
 
+    /// <summary> Defines a method used to retrieve the programmer facing debug display string representation of an instance. </summary>
+    public interface IDebugDisplay
+    {
         /// <summary> Returns a programming facing debug display string representation of the instance. </summary>
         /// <returns> A string representing the instance that can be used for debuging and diagnostics. </returns>
         public string ToDebugDisplay();
