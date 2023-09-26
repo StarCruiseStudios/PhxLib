@@ -16,13 +16,11 @@ namespace Phx.Lang {
     /// <summary> Represents the successful or unsuccessful result of an operation. </summary>
     /// <typeparam name="T"> The type of the value returned on operation success. </typeparam>
     /// <typeparam name="E"> The type of the value returned on operation failure. </typeparam>
-    public abstract class Result<T, E> {
-        /// <summary> Gets a value indicating whether the operation was successful. </summary>
-        /// <value> <c> true </c> if the operation was successful, otherwise false. </value>
+    public abstract class Result<T, E> : IResult<T, E> {
+        /// <inheritdoc />
         public bool IsSuccess { get; }
 
-        /// <summary> Gets a value indicating whether the operation failed. </summary>
-        /// <value> <c> true </c> if the operation failed, otherwise false. </value>
+        /// <inheritdoc />
         public bool IsFailure => !IsSuccess;
 
         internal Result(bool isSuccess) {
@@ -36,9 +34,16 @@ namespace Phx.Lang {
         ///     failed, or contains a different result.
         /// </returns>
         /// <remarks> This method compares the successful result to the given value using <c> Object.Equals() </c>. </remarks>
+        [Obsolete("Use Contains(Func<T, bool>) instead.")]
         public bool Contains(T expected) {
             return this is Success<T, E> s
                     && Equals(s.Result, expected);
+        }
+        
+        /// <inheritdoc />
+        public bool Contains(Func<T, bool> predicate) {
+            return this is Success<T, E> s
+                    && predicate(s.Result);
         }
 
         /// <summary> Indicates whether the <see cref="Result{T, E}" /> failed, and contains the given error value. </summary>
@@ -48,24 +53,22 @@ namespace Phx.Lang {
         ///     <c> true </c> if the result failed and contains the given value, or <c> false </c> if the operation
         ///     succeeded, or contains a different error.
         /// </returns>
+        [Obsolete("Use ContainsError(Func<E, bool>) instead.")]
         public bool ContainsError(E expected) {
             return this is Failure<T, E> f
                     && Equals(f.Error, expected);
         }
 
-        /// <summary>
-        ///     Maps a <see cref="Result{T, E}" /> instance to an instance of type <see cref="Result{T2, E}" /> using the
-        ///     provided converter function on a successful value.
-        /// </summary>
-        /// <remarks>
-        ///     The converter function is only used if the <see cref="Result{T, E}" /> is a successful value. A failed result
-        ///     will pass the error type unchanged.
-        /// </remarks>
-        /// <param name="convert"> The converter function. </param>
-        /// <typeparam name="T2"> The new type of the success result. </typeparam>
-        /// <returns> A <see cref="Result{T2, E}" /> instance constructed using the given converter function. </returns>
+        /// <inheritdoc />
+        public bool ContainsError(Func<E, bool> predicate) {
+            return this is Failure<T, E> f
+                    && predicate(f.Error);
+        }
+
+        
+        /// <inheritdoc />
         [SuppressMessage("General", "RCS1079", Justification = "Unreachable default case.")]
-        public Result<T2, E> Map<T2>(Func<T, T2> convert) {
+        public IResult<T2, E> Map<T2>(Func<T, T2> convert) {
             return this switch {
                 Success<T, E> s => Result.Success<T2, E>(convert(s.Result)),
                 Failure<T, E> f => Result.Failure<T2, E>(f.Error),
@@ -76,19 +79,10 @@ namespace Phx.Lang {
             };
         }
 
-        /// <summary>
-        ///     Maps a <see cref="Result{T, E}" /> instance to an instance of type <see cref="Result{T, E2}" /> using the
-        ///     provided converter function on a failure value.
-        /// </summary>
-        /// <remarks>
-        ///     The converter function is only used if the <see cref="Result{T, E}" /> is a failure value. A successful
-        ///     result will pass the result type unchanged.
-        /// </remarks>
-        /// <param name="convert"> The converter function. </param>
-        /// <typeparam name="E2"> The new type of the failure result. </typeparam>
-        /// <returns> A <see cref="Result{T, E2}" /> instance constructed using the given converter function. </returns>
+       
+        /// <inheritdoc />
         [SuppressMessage("General", "RCS1079", Justification = "Unreachable default case.")]
-        public Result<T, E2> MapError<E2>(Func<E, E2> convert) {
+        public IResult<T, E2> MapError<E2>(Func<E, E2> convert) {
             return this switch {
                 Success<T, E> s => Result.Success<T, E2>(s.Result),
                 Failure<T, E> f => Result.Failure<T, E2>(convert(f.Error)),
@@ -105,37 +99,15 @@ namespace Phx.Lang {
         /// </summary>
         /// <param name="defaultValue"> The alternative value in cases when the <see cref="Result{T, E}" /> is a failure. </param>
         /// <returns> A <typeparamref name="T" /> instance retrieved from the result or the provided default value. </returns>
+        [Obsolete("Use OrElse(Func<T>) instead.")]
         public T OrDefault(T defaultValue) {
             return (this is Success<T, E> s)
                     ? s.Result
                     : defaultValue;
         }
 
-        /// <summary>
-        ///     Returns the result value contained in the <see cref="Result{T, E}" /> if it was successful, otherwise returns
-        ///     the value provided by the given provider function.
-        /// </summary>
-        /// <param name="provideAlternative">
-        ///     The function that provides the alternative value in cases when the
-        ///     <see cref="Result{T, E}" /> is a failure.
-        /// </param>
-        /// <returns>
-        ///     A <typeparamref name="T" /> instance retrieved from the result or constructed using the given provider
-        ///     function.
-        /// </returns>
-        public T OrElse(Func<T> provideAlternative) {
-            return (this is Success<T, E> s)
-                    ? s.Result
-                    : provideAlternative();
-        }
-
-        /// <summary>
-        ///     Returns the result value contained in the <see cref="Result{T, E}" /> if it was successful, otherwise throws
-        ///     an <see cref="InvalidOperationException" />.
-        /// </summary>
-        /// <param name="message"> The message to provide to the new exception. </param>
-        /// <returns> A <see cref="T" /> instance retrieved from the result. </returns>
-        /// <exception cref="InvalidOperationException"> Thrown if the result is a failure. </exception>
+        
+        /// <inheritdoc />
         [SuppressMessage("General", "RCS1079", Justification = "Unreachable default case.")]
         public T OrThrow(string message = "The operation failed with an unexpected result") {
             return this switch {
@@ -159,10 +131,18 @@ namespace Phx.Lang {
         /// </param>
         /// <returns> A <typeparamref name="T" /> instance retrieved from the result. </returns>
         /// <exception> <typeparamref name="EX" /> thrown if the result is a failure. </exception>
+        [Obsolete("Use OrThrow(Func<E, Ex>) instead.")]
         public T OrThrow<Ex>(Func<Result<T, E>, Ex> provideException) where Ex : Exception {
             return (this is Success<T, E> s)
                     ? s.Result
                     : throw provideException(this);
+        }
+        
+        /// <inheritdoc />
+        public T OrThrow<Ex>(Func<E, Ex> provideException) where Ex : Exception {
+            return (this is Success<T, E> s)
+                    ? s.Result
+                    : throw provideException(((Failure<T, E>) this).Error);
         }
     }
 

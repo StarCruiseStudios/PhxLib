@@ -16,7 +16,6 @@ namespace Phx.Lang {
     [FixtureLifeCycle(LifeCycle.InstancePerTestCase)]
     [Parallelizable(ParallelScope.All)]
     public class StringExtensionsTests : LoggingTestClass {
-
         [TestCase("some string", "some string")]
         [TestCase(EmptyString, EmptyString)]
         [TestCase(null, NullString)]
@@ -29,7 +28,7 @@ namespace Phx.Lang {
                     expectedOutput,
                     (expected) => Verify.That(result.IsEqualTo(expected)));
         }
-        
+
         [TestCase("startLowercase", "StartLowercase")]
         [TestCase("StartUppercase", "StartUppercase")]
         [TestCase("_StartNonAlpha", "_StartNonAlpha")]
@@ -43,7 +42,7 @@ namespace Phx.Lang {
                     expectedOutput,
                     (expected) => Verify.That(result.IsEqualTo(expected)));
         }
-        
+
         [TestCase("startLowercase", "startLowercase")]
         [TestCase("StartUppercase", "startUppercase")]
         [TestCase("_StartNonAlpha", "_StartNonAlpha")]
@@ -57,7 +56,7 @@ namespace Phx.Lang {
                     expectedOutput,
                     (expected) => Verify.That(result.IsEqualTo(expected)));
         }
-        
+
         [TestCase("Car", "Car")]
         [TestCase("ICar", "Car")]
         [TestCase("IInput", "Input")]
@@ -73,7 +72,7 @@ namespace Phx.Lang {
                     expectedOutput,
                     (expected) => Verify.That(result.IsEqualTo(expected)));
         }
-        
+
         [TestCase(EmptyString, StringCasing.Camel, true)]
         [TestCase("containsNonAlpha!", StringCasing.Camel, false)]
         [TestCase("StartsWithCapital", StringCasing.Camel, false)]
@@ -121,14 +120,14 @@ namespace Phx.Lang {
                 bool isValid) {
             var input = Given("An input string", () => inputString);
 
-            var result = When($"Validating case {inputCasing}", 
+            var result = When($"Validating case {inputCasing}",
                     () => inputString.FromCase(inputCasing));
 
             Then("The expected validation result was returned.",
                     isValid,
                     (expected) => Verify.That(result.IsValid.IsEqualTo(expected)));
         }
-        
+
         [TestCase(EmptyString, StringCasing.Camel, EmptyString)]
         [TestCase("single", StringCasing.Camel, "SINGLE")]
         [TestCase("twoWords", StringCasing.Camel, "TWO_WORDS")]
@@ -164,7 +163,7 @@ namespace Phx.Lang {
                 string expectedOutput) {
             var input = Given("An input string", () => inputString);
 
-            var result = When($"Converting from {inputCasing}", 
+            var result = When($"Converting from {inputCasing}",
                     () => inputString.FromCase(inputCasing).ToCase(StringCasing.Caps));
 
             var resultString = Then("The conversion was successful", () => result.OrThrow());
@@ -172,7 +171,7 @@ namespace Phx.Lang {
                     expectedOutput,
                     (expected) => Verify.That(resultString.IsEqualTo(expected)));
         }
-        
+
         [TestCase(EmptyString, StringCasing.Camel, EmptyString)]
         [TestCase("SINGLE", StringCasing.Camel, "single")]
         [TestCase("TWO_WORDS", StringCasing.Camel, "twoWords")]
@@ -204,7 +203,7 @@ namespace Phx.Lang {
                 string expectedOutput) {
             var input = Given("An input string", () => inputString);
 
-            var result = When($"Converting to {outputCasing}", 
+            var result = When($"Converting to {outputCasing}",
                     () => inputString.FromCase(StringCasing.Caps).ToCase(outputCasing));
 
             var resultString = Then("The conversion was successful", () => result.OrThrow());
@@ -212,13 +211,13 @@ namespace Phx.Lang {
                     expectedOutput,
                     (expected) => Verify.That(resultString.IsEqualTo(expected)));
         }
-        
+
         [TestCase("\"", "\"\"")]
         [TestCase(EmptyString, EmptyString)]
         [TestCase("asdf", "asdf")]
         public void VerbatimStringEscape(string testStringUnescaped, string testStringEscaped) {
             Given("An unescaped input string.", () => testStringUnescaped);
-            
+
             var result = When("The string is escaped.", testStringUnescaped.EscapeVerbatimString);
             Then("The string is escaped correctly.",
                     testStringEscaped,
@@ -235,7 +234,7 @@ namespace Phx.Lang {
         [TestCase("asdf", "asdf")]
         public void QuoteStringEscape(string testStringUnescaped, string testStringEscaped) {
             Given("An unescaped input string.", () => testStringUnescaped);
-            
+
             var result = When("The string is escaped.", testStringUnescaped.EscapeStringQuotes);
             Then("The string is escaped correctly.",
                     testStringEscaped,
@@ -258,7 +257,7 @@ namespace Phx.Lang {
                     "123456",
                     (expected) => Verify.That(result.IsEqualTo(expected)));
         }
-        
+
         [Test]
         public void BuildStringBuildsAnEmptyString() {
             var result = When("A string is built using BuildString.",

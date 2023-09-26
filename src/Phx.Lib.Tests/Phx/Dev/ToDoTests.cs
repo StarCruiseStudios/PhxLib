@@ -24,7 +24,7 @@ namespace Phx.Dev {
                         });
                     });
         }
-        
+
         [Test]
         public void NotImplementedYetCanBeUsedOnItsOwn() {
             Then("ToDo.NotImplementedYet can be used as a standalone expression.",
@@ -34,7 +34,7 @@ namespace Phx.Dev {
                         });
                     });
         }
-        
+
         [Test]
         public void NotSupportedYetCanBeUsedAsAValue() {
             Then("ToDo.NotSupportedYet can be used in an assignment expression.",
@@ -44,7 +44,7 @@ namespace Phx.Dev {
                         });
                     });
         }
-        
+
         [Test]
         public void NotSupportedYetCanBeUsedOnItsOwn() {
             Then("ToDo.NotSupportedYet can be used as a standalone expression.",
