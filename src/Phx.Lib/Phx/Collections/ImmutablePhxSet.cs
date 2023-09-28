@@ -1,25 +1,22 @@
 // -----------------------------------------------------------------------------
-//  <copyright file="ImmutablePhxSet.cs" company="DangerDan9631">
-//      Copyright (c) 2021 DangerDan9631. All rights reserved.
-//      Licensed under the MIT License.
-//      See https://github.com/Dangerdan9631/Licenses/blob/main/LICENSE-MIT for full license information.
+//  <copyright file="ImmutablePhxSet.cs" company="Star Cruise Studios LLC">
+//      Copyright (c) 2023 Star Cruise Studios LLC. All rights reserved.
+//      Licensed under the Apache License, Version 2.0.
+//      See http://www.apache.org/licenses/LICENSE-2.0 for full license information.
 //  </copyright>
 // -----------------------------------------------------------------------------
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Phx.Lang;
 using static Phx.Collections.PhxCollections;
 
 namespace Phx.Collections {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
     using Phx.Debug;
 
-    /// <summary>
-    ///     An immutable collection that contains an unordered set of unique items.
-    /// </summary>
+    /// <summary> An immutable collection that contains an unordered set of unique items. </summary>
     /// <typeparam name="T"> The type of item contained in the set. </typeparam>
     public sealed class ImmutablePhxSet<T> : IPhxSet<T>, IDebugDisplay {
         private readonly HashSet<T> internalSet;
@@ -27,26 +24,25 @@ namespace Phx.Collections {
         /// <inheritdoc />
         public int Count => internalSet.Count;
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="ImmutablePhxSet{T}"/> class.
-        /// </summary>
+        /// <summary> Initializes a new instance of the <see cref="ImmutablePhxSet{T}" /> class. </summary>
         public ImmutablePhxSet() {
             internalSet = new HashSet<T>();
         }
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="ImmutablePhxSet{T}"/> class.
-        /// </summary>
+        /// <summary> Initializes a new instance of the <see cref="ImmutablePhxSet{T}" /> class. </summary>
         /// <param name="elements"> The elements to initialize the collection with. </param>
         public ImmutablePhxSet(IEnumerable<T> elements) {
             internalSet = new HashSet<T>(elements);
         }
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="ImmutablePhxSet{T}"/> class.
-        /// </summary>
+        /// <summary> Initializes a new instance of the <see cref="ImmutablePhxSet{T}" /> class. </summary>
         /// <param name="elements"> The elements to initialize the collection with. </param>
         public ImmutablePhxSet(params T[] elements) : this(elements.AsEnumerable()) { }
+
+        /// <inheritdoc />
+        public int CountWhere(Predicate<T> predicate) {
+            return internalSet.Count(predicate.Invoke);
+        }
 
         /// <inheritdoc />
         public bool Contains(object item) {
@@ -60,6 +56,7 @@ namespace Phx.Collections {
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -75,6 +72,7 @@ namespace Phx.Collections {
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -107,6 +105,7 @@ namespace Phx.Collections {
                     var subset = set.GetSubtraction(item);
                     _ = setsToAdd.Add(subset);
                 }
+
                 _ = powerSet.AddAll(setsToAdd);
             }
 
@@ -138,10 +137,19 @@ namespace Phx.Collections {
         public bool IsEquivalent(IEnumerable<T> other) {
             return Count == other.Count() && ContainsAll(other);
         }
+        /// <inheritdoc />
+        public bool IsEquivalent(IEnumerable other) {
+            return CheckGeneric(other, IsEquivalent);
+        }
 
         /// <inheritdoc />
         public bool IsProperSubsetOf(IEnumerable<T> other) {
             return internalSet.IsProperSubsetOf(other);
+        }
+
+        /// <inheritdoc />
+        public bool IsProperSubsetOf(IEnumerable other) {
+            return CheckGeneric(other, IsProperSubsetOf);
         }
 
         /// <inheritdoc />
@@ -150,8 +158,18 @@ namespace Phx.Collections {
         }
 
         /// <inheritdoc />
+        public bool IsProperSupersetOf(IEnumerable other) {
+            return CheckGeneric(other, IsProperSupersetOf);
+        }
+
+        /// <inheritdoc />
         public bool IsSubsetOf(IEnumerable<T> other) {
             return internalSet.IsSubsetOf(other);
+        }
+
+        /// <inheritdoc />
+        public bool IsSubsetOf(IEnumerable other) {
+            return CheckGeneric(other, IsSubsetOf);
         }
 
         /// <inheritdoc />
@@ -160,17 +178,45 @@ namespace Phx.Collections {
         }
 
         /// <inheritdoc />
+        public bool IsSupersetOf(IEnumerable other) {
+            return CheckGeneric(other, IsSupersetOf);
+        }
+
+        /// <inheritdoc />
         public string ToDebugDisplay() {
             StringBuilder builder = new StringBuilder(GetType().Name).Append(" [ ");
             foreach (var element in this) {
                 _ = builder.Append(element).Append(" ");
             }
+
             return builder.Append("]").ToString();
         }
 
         /// <inheritdoc />
         public override string ToString() {
             return ToDebugDisplay();
+        }
+
+        private static IEnumerable<T>? ConvertToGeneric(IEnumerable other) {
+            List<T> list = new();
+            foreach (var item in other) {
+                if (item is not T t) {
+                    return null;
+                }
+
+                list.Add(t);
+            }
+
+            return list;
+        }
+
+        private static bool CheckGeneric(IEnumerable items, Func<IEnumerable<T>, bool> check) {
+            var generic = ConvertToGeneric(items);
+            if (generic is null) {
+                return false;
+            }
+
+            return check(generic);
         }
     }
 }

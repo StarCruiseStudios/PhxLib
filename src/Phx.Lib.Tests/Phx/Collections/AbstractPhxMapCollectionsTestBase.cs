@@ -1,15 +1,15 @@
 // -----------------------------------------------------------------------------
-//  <copyright file="AbstractPhxMapCollectionsTestBase.cs" company="DangerDan9631">
-//      Copyright (c) 2021 DangerDan9631. All rights reserved.
-//      Licensed under the MIT License.
-//      See https://github.com/Dangerdan9631/Licenses/blob/main/LICENSE-MIT for full license information.
+//  <copyright file="AbstractPhxMapCollectionsTestBase.cs" company="Star Cruise Studios LLC">
+//      Copyright (c) 2023 Star Cruise Studios LLC. All rights reserved.
+//      Licensed under the Apache License, Version 2.0.
+//      See http://www.apache.org/licenses/LICENSE-2.0 for full license information.
 //  </copyright>
 // -----------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using Phx.Test;
-
 namespace Phx.Collections {
+    using System.Collections.Generic;
+    using Phx.Test;
+
     public abstract class AbstractPhxMapCollectionsTestBase : LoggingTestClass {
         public abstract T GetTestInstance<T>(IEnumerable<(string, string)> elements) where T : IPhxMap<string, string>;
 

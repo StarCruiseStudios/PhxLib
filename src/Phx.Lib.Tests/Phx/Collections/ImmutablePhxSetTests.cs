@@ -1,22 +1,23 @@
 // -----------------------------------------------------------------------------
-//  <copyright file="ImmutablePhxSetTests.cs" company="DangerDan9631">
-//      Copyright (c) 2021 DangerDan9631. All rights reserved.
-//      Licensed under the MIT License.
-//      See https://github.com/Dangerdan9631/Licenses/blob/main/LICENSE-MIT for full license information.
+//  <copyright file="ImmutablePhxSetTests.cs" company="Star Cruise Studios LLC">
+//      Copyright (c) 2023 Star Cruise Studios LLC. All rights reserved.
+//      Licensed under the Apache License, Version 2.0.
+//      See http://www.apache.org/licenses/LICENSE-2.0 for full license information.
 //  </copyright>
 // -----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using NUnit.Framework;
-
 namespace Phx.Collections {
+    using System;
+    using System.Collections.Generic;
+    using NUnit.Framework;
+
     public static class ImmutablePhxSetTests {
-        private static T ConstructTestInstance<T, U>(IEnumerable<U> elements) where T : IPhxContainer {
+        private static T ConstructTestInstance<T, U>(IEnumerable<U> elements) where T : IPhxContainer<U> {
             var set = new ImmutablePhxSet<U>(elements);
             if (set is T s) {
                 return s;
             }
+
             throw new InvalidOperationException($"Cannot convert to expected type {typeof(T)}.");
         }
 

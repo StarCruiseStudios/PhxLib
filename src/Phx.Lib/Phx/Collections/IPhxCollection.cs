@@ -10,11 +10,10 @@ namespace Phx.Collections {
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Phx.Lang;
 
     /// <summary> Represents a readonly collection of elements that can be queried. </summary>
     /// <typeparam name="T"> The type of the elements contained in the <see cref="IPhxCollection{T}" />. </typeparam>
-    public interface IPhxCollection<out T> : IPhxContainer, IEnumerable<T> {
+    public interface IPhxCollection<out T> : IPhxContainer<T>, IEnumerable<T> {
         /// <summary>
         ///     Returns whether the specified item is contained inside of the
         ///     <see cref="IPhxCollection{T}" />.
@@ -29,6 +28,22 @@ namespace Phx.Collections {
         ///     otherwise <c> false </c>.
         /// </returns>
         public bool Contains(object item);
+
+        /// <summary>
+        ///     Returns whether all of the specified items are contained inside of the
+        ///     <see cref="IPhxCollection{T}" />.
+        /// </summary>
+        /// <remarks>
+        ///     This method will greedily search for only a single occurrence of each of the specified
+        ///     items, and will greedily return when one of the elements is found to be missing from the
+        ///     <see cref="IPhxCollection{T}" />.
+        /// </remarks>
+        /// <param name="items"> The items to locate in the <see cref="IPhxCollection{T}" />. </param>
+        /// <returns>
+        ///     <c> true </c> if all of the elements are present in the <see cref="IPhxCollection{T}" />,
+        ///     otherwise <c> false </c>.
+        /// </returns>
+        public bool ContainsAll(IEnumerable items);
 
         /// <summary>
         ///     Returns whether an item matching the specified predicate is contained inside of the
@@ -56,7 +71,13 @@ namespace Phx.Collections {
         ///     otherwise <c> false </c>.
         /// </returns>
         public bool ContainsAny(IEnumerable items);
+    }
 
+    /// <summary>
+    ///     Contains extension methods applied to all implementations of
+    ///     <see cref="IPhxCollection{T}" />.
+    /// </summary>
+    public static class IPhxCollectionExtensions {
         /// <summary>
         ///     Returns whether all of the specified items are contained inside of the
         ///     <see cref="IPhxCollection{T}" />.
@@ -66,11 +87,32 @@ namespace Phx.Collections {
         ///     items, and will greedily return when one of the elements is found to be missing from the
         ///     <see cref="IPhxCollection{T}" />.
         /// </remarks>
+        /// <param name="collection"> The collection to perform the operation on. </param>
         /// <param name="items"> The items to locate in the <see cref="IPhxCollection{T}" />. </param>
         /// <returns>
-        ///     <c> true </c> if all of the elements is present in the <see cref="IPhxCollection{T}" />,
+        ///     <c> true </c> if all of the elements are present in the <see cref="IPhxCollection{T}" />,
         ///     otherwise <c> false </c>.
         /// </returns>
-        public bool ContainsAll(IEnumerable items);
+        public static bool ContainsAll<T>(this IPhxCollection<T> collection, params object[] items) {
+            return collection.ContainsAll(items);
+        }
+
+        /// <summary>
+        ///     Returns whether any of the specified items is contained inside of the
+        ///     <see cref="IPhxCollection{T}" />.
+        /// </summary>
+        /// <remarks>
+        ///     This method will return greedily when the first occurrence of one of the specified items
+        ///     is found.
+        /// </remarks>
+        /// <param name="collection"> The collection to perform the operation on. </param>
+        /// <param name="items"> The items to locate in the <see cref="IPhxCollection{T}" />. </param>
+        /// <returns>
+        ///     <c> true </c> if one of the elements is present in the <see cref="IPhxCollection{T}" />,
+        ///     otherwise <c> false </c>.
+        /// </returns>
+        public static bool ContainsAny<T>(this IPhxCollection<T> collection, params object[] items) {
+            return collection.ContainsAny(items);
+        }
     }
 }

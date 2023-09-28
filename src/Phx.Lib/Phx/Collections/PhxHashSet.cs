@@ -1,62 +1,65 @@
 // -----------------------------------------------------------------------------
-//  <copyright file="PhxHashSet.cs" company="DangerDan9631">
-//      Copyright (c) 2021 DangerDan9631. All rights reserved.
-//      Licensed under the MIT License.
-//      See https://github.com/Dangerdan9631/Licenses/blob/main/LICENSE-MIT for full license information.
+//  <copyright file="PhxHashSet.cs" company="Star Cruise Studios LLC">
+//      Copyright (c) 2023 Star Cruise Studios LLC. All rights reserved.
+//      Licensed under the Apache License, Version 2.0.
+//      See http://www.apache.org/licenses/LICENSE-2.0 for full license information.
 //  </copyright>
 // -----------------------------------------------------------------------------
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Phx.Lang;
 using static Phx.Collections.PhxCollections;
 
 namespace Phx.Collections {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
     using Phx.Debug;
+    using Phx.Lang;
 
-    /// <summary>
-    ///     A mutable collection that contains an unordered set of unique items.
-    /// </summary>
+    /// <summary> A mutable collection that contains an unordered set of unique items. </summary>
     /// <typeparam name="T"> The type of item contained in the set. </typeparam>
-    public sealed class PhxHashSet<T> : IMutablePhxSet<T>, IDebugDisplay {
+    public sealed class PhxHashSet<T> : IPhxMutableSet<T>, IDebugDisplay {
         private readonly HashSet<T> internalSet;
 
         /// <inheritdoc />
         public int Count => internalSet.Count;
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="PhxHashSet{T}"/> class.
-        /// </summary>
+        /// <summary> Initializes a new instance of the <see cref="PhxHashSet{T}" /> class. </summary>
         public PhxHashSet() {
             internalSet = new HashSet<T>();
         }
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="PhxHashSet{T}"/> class.
-        /// </summary>
+        /// <summary> Initializes a new instance of the <see cref="PhxHashSet{T}" /> class. </summary>
         /// <param name="elements"> The elements to initialize the collection with. </param>
         public PhxHashSet(IEnumerable<T> elements) {
             internalSet = new HashSet<T>(elements);
         }
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="PhxHashSet{T}"/> class.
-        /// </summary>
+        /// <summary> Initializes a new instance of the <see cref="PhxHashSet{T}" /> class. </summary>
         /// <param name="elements"> The elements to initialize the collection with. </param>
         public PhxHashSet(params T[] elements) : this(elements.AsEnumerable()) { }
 
+        /// <inheritdoc />
+        public int CountWhere(Predicate<T> predicate) {
+            return internalSet.Count(predicate.Invoke);
+        }
+
+        /// <inheritdoc />
         public bool Contains(T item) {
             return internalSet.Contains(item);
         }
+
+        /// <inheritdoc />
         public bool ContainsAny(IEnumerable<T> items) {
             return items.Any(internalSet.Contains);
         }
+
+        /// <inheritdoc />
         public bool ContainsAll(IEnumerable<T> items) {
             return items.All(internalSet.Contains);
         }
+
         /// <inheritdoc />
         public bool Add(T item) {
             return internalSet.Add(item);
@@ -74,9 +77,11 @@ namespace Phx.Collections {
             return numAdded;
         }
 
+        /// <inheritdoc />
         public int RetainOnly(Predicate<T> predicate) {
             return internalSet.RemoveWhere(item => !predicate(item));
         }
+
         /// <inheritdoc />
         public void Clear() {
             internalSet.Clear();
@@ -89,12 +94,7 @@ namespace Phx.Collections {
 
         /// <inheritdoc />
         public bool ContainsAll(IEnumerable items) {
-            foreach (var item in items) {
-                if (item is not T t || !internalSet.Contains(t)) {
-                    return false;
-                }
-            }
-            return true;
+            return CheckGeneric(items, ContainsAll);
         }
 
         /// <inheritdoc />
@@ -104,12 +104,7 @@ namespace Phx.Collections {
 
         /// <inheritdoc />
         public bool ContainsAny(IEnumerable items) {
-            foreach (var item in items) {
-                if (item is T t && internalSet.Contains(t)) {
-                    return true;
-                }
-            }
-            return false;
+            return CheckGeneric(items, ContainsAny);
         }
 
         /// <inheritdoc />
@@ -141,6 +136,7 @@ namespace Phx.Collections {
                     var subset = set.GetSubtraction(item);
                     _ = setsToAdd.Add(subset);
                 }
+
                 _ = powerSet.AddAll(setsToAdd);
             }
 
@@ -179,8 +175,18 @@ namespace Phx.Collections {
         }
 
         /// <inheritdoc />
+        public bool IsEquivalent(IEnumerable other) {
+            return CheckGeneric(other, IsEquivalent);
+        }
+
+        /// <inheritdoc />
         public bool IsProperSubsetOf(IEnumerable<T> other) {
             return internalSet.IsProperSubsetOf(other);
+        }
+
+        /// <inheritdoc />
+        public bool IsProperSubsetOf(IEnumerable other) {
+            return CheckGeneric(other, IsProperSubsetOf);
         }
 
         /// <inheritdoc />
@@ -189,13 +195,28 @@ namespace Phx.Collections {
         }
 
         /// <inheritdoc />
+        public bool IsProperSupersetOf(IEnumerable other) {
+            return CheckGeneric(other, IsProperSupersetOf);
+        }
+
+        /// <inheritdoc />
         public bool IsSubsetOf(IEnumerable<T> other) {
             return internalSet.IsSubsetOf(other);
         }
 
         /// <inheritdoc />
+        public bool IsSubsetOf(IEnumerable other) {
+            return CheckGeneric(other, IsSubsetOf);
+        }
+
+        /// <inheritdoc />
         public bool IsSupersetOf(IEnumerable<T> other) {
             return internalSet.IsSupersetOf(other);
+        }
+
+        /// <inheritdoc />
+        public bool IsSupersetOf(IEnumerable other) {
+            return CheckGeneric(other, IsSupersetOf);
         }
 
         /// <inheritdoc />
@@ -236,12 +257,35 @@ namespace Phx.Collections {
             foreach (var element in this) {
                 _ = builder.Append(element.ToDebugDisplayString()).Append(" ");
             }
+
             return builder.Append("]").ToString();
         }
 
         /// <inheritdoc />
         public override string ToString() {
             return ToDebugDisplay();
+        }
+
+        private static IEnumerable<T>? ConvertToGeneric(IEnumerable other) {
+            List<T> list = new();
+            foreach (var item in other) {
+                if (item is not T t) {
+                    return null;
+                }
+
+                list.Add(t);
+            }
+
+            return list;
+        }
+
+        private static bool CheckGeneric(IEnumerable items, Func<IEnumerable<T>, bool> check) {
+            var generic = ConvertToGeneric(items);
+            if (generic is null) {
+                return false;
+            }
+
+            return check(generic);
         }
     }
 }

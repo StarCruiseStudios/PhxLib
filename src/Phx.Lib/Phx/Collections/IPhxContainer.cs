@@ -7,11 +7,23 @@
 // -----------------------------------------------------------------------------
 
 namespace Phx.Collections {
+    using System;
 
     /// <summary> Represents a class that contains multiple elements. </summary>
-    public interface IPhxContainer {
-        /// <summary> Gets the number of elements contained in the <see cref="IPhxContainer" />. </summary>
+    public interface IPhxContainer<out T> {
+        /// <summary> Gets the number of elements contained in the <see cref="IPhxContainer{T}" />. </summary>
         public int Count { get; }
+
+        /// <summary>
+        ///     Gets the number of elements contained in the <see cref="IPhxContainer{T}" /> that match
+        ///     the given predicate.
+        /// </summary>
+        /// <param name="predicate"> The predicate that returns <c> true </c> when a desired item is provided. </param>
+        /// <returns>
+        ///     The number of elements contained in the <see cref="IPhxContainer{T}" /> that match the
+        ///     given predicate.
+        /// </returns>
+        public int CountWhere(Predicate<T> predicate);
     }
 
     /// <summary>
@@ -22,7 +34,7 @@ namespace Phx.Collections {
         /// <summary> Gets a value indicating whether the <see cref="IPhxContainer" /> is empty. </summary>
         /// <param name="container"> The container to perform the operation on. </param>
         /// <returns> <c> true </c> if the <see cref="IPhxContainer" /> is empty, otherwise <c> false </c>. </returns>
-        public static bool IsEmpty(this IPhxContainer container) {
+        public static bool IsEmpty<T>(this IPhxContainer<T> container) {
             return container.Count == 0;
         }
 
@@ -32,7 +44,7 @@ namespace Phx.Collections {
         ///     <c> true </c> if the <see cref="IPhxContainer" /> contains at least one item, otherwise
         ///     <c> false </c>.
         /// </returns>
-        public static bool IsNotEmpty(this IPhxContainer container) {
+        public static bool IsNotEmpty<T>(this IPhxContainer<T> container) {
             return container.Count != 0;
         }
 
@@ -42,7 +54,7 @@ namespace Phx.Collections {
         ///     <c> true </c> if the <see cref="IPhxContainer" /> is empty or null, otherwise
         ///     <c> false </c>.
         /// </returns>
-        public static bool IsNullOrEmpty(this IPhxContainer? container) {
+        public static bool IsNullOrEmpty<T>(this IPhxContainer<T>? container) {
             return container == null || container.Count == 0;
         }
     }

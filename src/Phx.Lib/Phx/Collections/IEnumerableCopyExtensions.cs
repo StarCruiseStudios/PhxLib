@@ -11,69 +11,55 @@ namespace Phx.Collections {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
-    using static Phx.Collections.PhxCollections;
+    using static PhxCollections;
 
-    /// <summary>
-    ///     Contains extension methods to copy values to different collection types.
-    /// </summary>
+    /// <summary> Contains extension methods to copy values to different collection types. </summary>
     public static class IEnumerableCopyExtensions {
-        /// <summary>
-        ///     Copies the given collection to an <see cref="IReadOnlyCollection{T}"/> instance.
-        /// </summary>
-        /// <typeparam name="T"> The type of the elements contained in the <see cref="IEnumerable{T}"/>. </typeparam>
+        /// <summary> Copies the given collection to an <see cref="IReadOnlyCollection{T}" /> instance. </summary>
+        /// <typeparam name="T"> The type of the elements contained in the <see cref="IEnumerable{T}" />. </typeparam>
         /// <param name="collection"> The collection to perform the operation on. </param>
-        /// <returns> A newly constructed <see cref="IReadOnlyCollection{T}"/> instance. </returns>
+        /// <returns> A newly constructed <see cref="IReadOnlyCollection{T}" /> instance. </returns>
         public static IReadOnlyCollection<T> CopyToReadOnlyCollection<T>(this IEnumerable<T> collection) {
             return CopyToReadOnlyList(collection);
         }
 
-        /// <summary>
-        ///     Copies the given collection to an <see cref="IReadOnlyList{T}"/> instance.
-        /// </summary>
-        /// <typeparam name="T"> The type of the elements contained in the <see cref="IEnumerable{T}"/>. </typeparam>
+        /// <summary> Copies the given collection to an <see cref="IReadOnlyList{T}" /> instance. </summary>
+        /// <typeparam name="T"> The type of the elements contained in the <see cref="IEnumerable{T}" />. </typeparam>
         /// <param name="collection"> The collection to perform the operation on. </param>
-        /// <returns> A newly constructed <see cref="IReadOnlyList{T}"/> instance. </returns>
+        /// <returns> A newly constructed <see cref="IReadOnlyList{T}" /> instance. </returns>
         public static IReadOnlyList<T> CopyToReadOnlyList<T>(this IEnumerable<T> collection) {
             return new ReadOnlyCollection<T>(new List<T>(collection));
         }
 
-        /// <summary>
-        ///     Copies the given collection to an <see cref="ICollection{T}"/> instance.
-        /// </summary>
-        /// <typeparam name="T"> The type of the elements contained in the <see cref="IEnumerable{T}"/>. </typeparam>
+        /// <summary> Copies the given collection to an <see cref="ICollection{T}" /> instance. </summary>
+        /// <typeparam name="T"> The type of the elements contained in the <see cref="IEnumerable{T}" />. </typeparam>
         /// <param name="collection"> The collection to perform the operation on. </param>
-        /// <returns> A newly constructed <see cref="ICollection{T}"/> instance. </returns>
+        /// <returns> A newly constructed <see cref="ICollection{T}" /> instance. </returns>
         public static ICollection<T> CopyToCollection<T>(this IEnumerable<T> collection) {
             return CopyToList(collection);
         }
 
-        /// <summary>
-        ///     Copies the given collection to an <see cref="IList{T}"/> instance.
-        /// </summary>
-        /// <typeparam name="T"> The type of the elements contained in the <see cref="IEnumerable{T}"/>. </typeparam>
+        /// <summary> Copies the given collection to an <see cref="IList{T}" /> instance. </summary>
+        /// <typeparam name="T"> The type of the elements contained in the <see cref="IEnumerable{T}" />. </typeparam>
         /// <param name="collection"> The collection to perform the operation on. </param>
-        /// <returns> A newly constructed <see cref="IList{T}"/> instance. </returns>
+        /// <returns> A newly constructed <see cref="IList{T}" /> instance. </returns>
         public static IList<T> CopyToList<T>(this IEnumerable<T> collection) {
             return new List<T>(collection);
         }
 
-        /// <summary>
-        ///     Copies the given collection to an <see cref="ISet{T}"/> instance.
-        /// </summary>
-        /// <typeparam name="T"> The type of the elements contained in the <see cref="IEnumerable{T}"/>. </typeparam>
+        /// <summary> Copies the given collection to an <see cref="ISet{T}" /> instance. </summary>
+        /// <typeparam name="T"> The type of the elements contained in the <see cref="IEnumerable{T}" />. </typeparam>
         /// <param name="collection"> The collection to perform the operation on. </param>
-        /// <returns> A newly constructed <see cref="ISet{T}"/> instance. </returns>
+        /// <returns> A newly constructed <see cref="ISet{T}" /> instance. </returns>
         public static ISet<T> CopyToSet<T>(this IEnumerable<T> collection) {
             return new HashSet<T>(collection);
         }
 
-        /// <summary>
-        ///     Copies the given collection to an <see cref="IDictionary{TKey, TValue}"/> instance.
-        /// </summary>
+        /// <summary> Copies the given collection to an <see cref="IDictionary{TKey, TValue}" /> instance. </summary>
         /// <typeparam name="TKey"> The type of object used as a key. </typeparam>
         /// <typeparam name="TValue"> The type of object used as a value. </typeparam>
         /// <param name="collection"> The collection to perform the operation on. </param>
-        /// <returns> A newly constructed <see cref="IDictionary{TKey, TValue}"/> instance. </returns>
+        /// <returns> A newly constructed <see cref="IDictionary{TKey, TValue}" /> instance. </returns>
         public static IDictionary<TKey, TValue> CopyToDictionary<TKey, TValue>(this IPhxMap<TKey, TValue> collection) {
             var dict = new Dictionary<TKey, TValue>();
             foreach (var entry in collection.Entries) {
@@ -83,135 +69,144 @@ namespace Phx.Collections {
             return dict;
         }
 
-        public static KeyValuePair<TKey, TValue> CopyToKeyValuePair<TKey, TValue>(this IPhxPair<TKey, TValue> pair) {
-            return new KeyValuePair<TKey, TValue>(pair.Key, pair.Value);
+        /// <summary> Copies the given key value pair to an <see cref="KeyValuePair{TKey, TValue}" /> instance. </summary>
+        /// <typeparam name="TKey"> The type of the key. </typeparam>
+        /// <typeparam name="TValue"> The type of the Value. </typeparam>
+        /// <param name="keyValuePair"> The pair to perform the operation on. </param>
+        /// <returns> A newly constructed <see cref="KeyValuePair{TKey, TValue}" /> instance. </returns>
+        public static KeyValuePair<TKey, TValue> CopyToKeyValuePair<TKey, TValue>(
+                this IPhxKeyValuePair<TKey, TValue> keyValuePair) {
+            return new KeyValuePair<TKey, TValue>(keyValuePair.Key, keyValuePair.Value);
         }
 
         /// <summary>
-        ///     Copies the given collection to an <see cref="IPhxCollection{T}"/> instance.
+        ///     Copies the given key value pair to an <see cref="IPhxKeyValuePair{TKey, TValue}" />
+        ///     instance.
         /// </summary>
-        /// <typeparam name="T"> The type of the elements contained in the <see cref="IEnumerable{T}"/>. </typeparam>
+        /// <typeparam name="TKey"> The type of the key. </typeparam>
+        /// <typeparam name="TValue"> The type of the Value. </typeparam>
+        /// <param name="keyValuePair"> The pair to perform the operation on. </param>
+        /// <returns> A newly constructed <see cref="IPhxKeyValuePair{TKey, TValue}" /> instance. </returns>
+        public static IPhxKeyValuePair<TKey, TValue> CopyToKeyValuePair<TKey, TValue>(
+                this KeyValuePair<TKey, TValue> keyValuePair) {
+            return new PhxKeyValuePair<TKey, TValue>(keyValuePair.Key, keyValuePair.Value);
+        }
+
+        /// <summary> Copies the given collection to an <see cref="IPhxCollection{T}" /> instance. </summary>
+        /// <typeparam name="T"> The type of the elements contained in the <see cref="IEnumerable{T}" />. </typeparam>
         /// <param name="collection"> The collection to perform the operation on. </param>
-        /// <returns> A newly constructed <see cref="IPhxCollection{T}"/> instance. </returns>
+        /// <returns> A newly constructed <see cref="IPhxCollection{T}" /> instance. </returns>
         public static IPhxCollection<T> CopyToPhxCollection<T>(this IEnumerable<T> collection) {
             return CopyToPhxList(collection);
         }
 
-        /// <summary>
-        ///     Copies the given collection to an <see cref="IMutablePhxCollection{T}"/> instance.
-        /// </summary>
-        /// <typeparam name="T"> The type of the elements contained in the <see cref="IEnumerable{T}"/>. </typeparam>
+        /// <summary> Copies the given collection to an <see cref="IPhxMutableCollection{T}" /> instance. </summary>
+        /// <typeparam name="T"> The type of the elements contained in the <see cref="IEnumerable{T}" />. </typeparam>
         /// <param name="collection"> The collection to perform the operation on. </param>
-        /// <returns> A newly constructed <see cref="IMutablePhxCollection{T}"/> instance. </returns>
-        public static IMutablePhxCollection<T> CopyToMutablePhxCollection<T>(this IEnumerable<T> collection) {
+        /// <returns> A newly constructed <see cref="IPhxMutableCollection{T}" /> instance. </returns>
+        public static IPhxMutableCollection<T> CopyToMutablePhxCollection<T>(this IEnumerable<T> collection) {
             return CopyToMutablePhxList(collection);
         }
 
-        /// <summary>
-        ///     Copies the given collection to an <see cref="IPhxList{T}"/> instance.
-        /// </summary>
-        /// <typeparam name="T"> The type of the elements contained in the <see cref="IEnumerable{T}"/>. </typeparam>
+        /// <summary> Copies the given collection to an <see cref="IPhxList{T}" /> instance. </summary>
+        /// <typeparam name="T"> The type of the elements contained in the <see cref="IEnumerable{T}" />. </typeparam>
         /// <param name="collection"> The collection to perform the operation on. </param>
-        /// <returns> A newly constructed <see cref="IPhxList{T}"/> instance. </returns>
+        /// <returns> A newly constructed <see cref="IPhxList{T}" /> instance. </returns>
         public static IPhxList<T> CopyToPhxList<T>(this IEnumerable<T> collection) {
             return new ImmutablePhxList<T>(collection);
         }
 
-        /// <summary>
-        ///     Copies the given collection to an <see cref="IMutablePhxList{T}"/> instance.
-        /// </summary>
-        /// <typeparam name="T"> The type of the elements contained in the <see cref="IEnumerable{T}"/>. </typeparam>
+        /// <summary> Copies the given collection to an <see cref="IPhxMutableList{T}" /> instance. </summary>
+        /// <typeparam name="T"> The type of the elements contained in the <see cref="IEnumerable{T}" />. </typeparam>
         /// <param name="collection"> The collection to perform the operation on. </param>
-        /// <returns> A newly constructed <see cref="IMutablePhxList{T}"/> instance. </returns>
-        public static IMutablePhxList<T> CopyToMutablePhxList<T>(this IEnumerable<T> collection) {
+        /// <returns> A newly constructed <see cref="IPhxMutableList{T}" /> instance. </returns>
+        public static IPhxMutableList<T> CopyToMutablePhxList<T>(this IEnumerable<T> collection) {
             return MutableListOf<T>(collection);
         }
 
-        /// <summary>
-        ///     Copies the given collection to an <see cref="IPhxSet{T}"/> instance.
-        /// </summary>
-        /// <typeparam name="T"> The type of the elements contained in the <see cref="IEnumerable{T}"/>. </typeparam>
+        /// <summary> Copies the given collection to an <see cref="IPhxSet{T}" /> instance. </summary>
+        /// <typeparam name="T"> The type of the elements contained in the <see cref="IEnumerable{T}" />. </typeparam>
         /// <param name="collection"> The collection to perform the operation on. </param>
-        /// <param name="throwOnDuplicates"> Indicates whether an exception should be thrown if the given collection
-        ///                                  contains duplicates that will be lost on copy. </param>
-        /// <returns> A newly constructed <see cref="IPhxSet{T}"/> instance. </returns>
-        /// <exception cref="ArgumentException"> thrown if <paramref name="throwOnDuplicates"/> is <c>true</c> and the
-        ///                                      given collection contains duplicate values that were lost when copying
-        ///                                      to a set. </exception>
+        /// <param name="throwOnDuplicates">
+        ///     Indicates whether an exception should be thrown if the given
+        ///     collection contains duplicates that will be lost on copy.
+        /// </param>
+        /// <returns> A newly constructed <see cref="IPhxSet{T}" /> instance. </returns>
+        /// <exception cref="ArgumentException">
+        ///     thrown if <paramref name="throwOnDuplicates" /> is
+        ///     <c> true </c> and the given collection contains duplicate values that were lost when copying to
+        ///     a set.
+        /// </exception>
         public static IPhxSet<T> CopyToPhxSet<T>(this IEnumerable<T> collection, bool throwOnDuplicates = false) {
             var newSet = SetOf(collection);
             if (throwOnDuplicates && newSet.Count != collection.Count()) {
                 throw new ArgumentException("Given collection contained duplicates that were lost on copy.");
             }
+
             return newSet;
         }
 
-        /// <summary>
-        ///     Copies the given collection to an <see cref="IMutablePhxSet{T}"/> instance.
-        /// </summary>
-        /// <typeparam name="T"> The type of the elements contained in the <see cref="IEnumerable{T}"/>. </typeparam>
+        /// <summary> Copies the given collection to an <see cref="IPhxMutableSet{T}" /> instance. </summary>
+        /// <typeparam name="T"> The type of the elements contained in the <see cref="IEnumerable{T}" />. </typeparam>
         /// <param name="collection"> The collection to perform the operation on. </param>
-        /// <param name="throwOnDuplicates"> Indicates whether an exception should be thrown if the given collection
-        ///                                  contains duplicates that will be lost on copy. </param>
-        /// <returns> A newly constructed <see cref="IMutablePhxSet{T}"/> instance. </returns>
-        /// <exception cref="ArgumentException"> thrown if <paramref name="throwOnDuplicates"/> is <c>true</c> and the
-        ///                                      given collection contains duplicate values that were lost when copying
-        ///                                      to a set. </exception>
-        public static IMutablePhxSet<T> CopyToMutablePhxSet<T>(
-            this IEnumerable<T> collection,
-            bool throwOnDuplicates = false
+        /// <param name="throwOnDuplicates">
+        ///     Indicates whether an exception should be thrown if the given
+        ///     collection contains duplicates that will be lost on copy.
+        /// </param>
+        /// <returns> A newly constructed <see cref="IPhxMutableSet{T}" /> instance. </returns>
+        /// <exception cref="ArgumentException">
+        ///     thrown if <paramref name="throwOnDuplicates" /> is
+        ///     <c> true </c> and the given collection contains duplicate values that were lost when copying to
+        ///     a set.
+        /// </exception>
+        public static IPhxMutableSet<T> CopyToMutablePhxSet<T>(
+                this IEnumerable<T> collection,
+                bool throwOnDuplicates = false
         ) {
             var newSet = MutableSetOf(collection);
             if (throwOnDuplicates && newSet.Count != collection.Count()) {
                 throw new ArgumentException("Given collection contained duplicates that were lost on copy.");
             }
+
             return newSet;
         }
 
-        /// <summary>
-        ///     Copies the given collection to an <see cref="IPhxMap{TKey, TValue}"/> instance.
-        /// </summary>
+        /// <summary> Copies the given collection to an <see cref="IPhxMap{TKey, TValue}" /> instance. </summary>
         /// <typeparam name="TKey"> The type of object used as a key. </typeparam>
         /// <typeparam name="TValue"> The type of object used as a value. </typeparam>
         /// <param name="collection"> The collection to perform the operation on. </param>
-        /// <returns> A newly constructed <see cref="IPhxMap{TKey, TValue}"/> instance. </returns>
+        /// <returns> A newly constructed <see cref="IPhxMap{TKey, TValue}" /> instance. </returns>
         public static IPhxMap<TKey, TValue> CopyToPhxMap<TKey, TValue>(this IPhxMap<TKey, TValue> collection) {
             return new ImmutablePhxMap<TKey, TValue>(collection);
         }
 
-        /// <summary>
-        ///     Copies the given collection to an <see cref="IPhxMap{TKey, TValue}"/> instance.
-        /// </summary>
+        /// <summary> Copies the given collection to an <see cref="IPhxMap{TKey, TValue}" /> instance. </summary>
         /// <typeparam name="TKey"> The type of object used as a key. </typeparam>
         /// <typeparam name="TValue"> The type of object used as a value. </typeparam>
         /// <param name="collection"> The collection to perform the operation on. </param>
-        /// <returns> A newly constructed <see cref="IPhxMap{TKey, TValue}"/> instance. </returns>
+        /// <returns> A newly constructed <see cref="IPhxMap{TKey, TValue}" /> instance. </returns>
         public static IPhxMap<TKey, TValue> CopyToPhxMap<TKey, TValue>(this IDictionary<TKey, TValue> collection) {
             return new ImmutablePhxMap<TKey, TValue>(collection);
         }
 
-        /// <summary>
-        ///     Copies the given collection to an <see cref="IMutablePhxMap{TKey, TValue}"/> instance.
-        /// </summary>
+        /// <summary> Copies the given collection to an <see cref="IPhxMutableMap{TKey,TValue}" /> instance. </summary>
         /// <typeparam name="TKey"> The type of object used as a key. </typeparam>
         /// <typeparam name="TValue"> The type of object used as a value. </typeparam>
         /// <param name="collection"> The collection to perform the operation on. </param>
-        /// <returns> A newly constructed <see cref="IMutablePhxMap{TKey, TValue}"/> instance. </returns>
-        public static IMutablePhxMap<TKey, TValue> CopyToMutablePhxMap<TKey, TValue>(
-            this IPhxMap<TKey, TValue> collection
+        /// <returns> A newly constructed <see cref="IPhxMutableMap{TKey,TValue}" /> instance. </returns>
+        public static IPhxMutableMap<TKey, TValue> CopyToMutablePhxMap<TKey, TValue>(
+                this IPhxMap<TKey, TValue> collection
         ) {
             return new PhxHashMap<TKey, TValue>(collection);
         }
 
-        /// <summary>
-        ///     Copies the given collection to an <see cref="IMutablePhxMap{TKey, TValue}"/> instance.
-        /// </summary>
+        /// <summary> Copies the given collection to an <see cref="IPhxMutableMap{TKey,TValue}" /> instance. </summary>
         /// <typeparam name="TKey"> The type of object used as a key. </typeparam>
         /// <typeparam name="TValue"> The type of object used as a value. </typeparam>
         /// <param name="collection"> The collection to perform the operation on. </param>
-        /// <returns> A newly constructed <see cref="IMutablePhxMap{TKey, TValue}"/> instance. </returns>
-        public static IMutablePhxMap<TKey, TValue> CopyToMutablePhxMap<TKey, TValue>(
-            this IDictionary<TKey, TValue> collection
+        /// <returns> A newly constructed <see cref="IPhxMutableMap{TKey,TValue}" /> instance. </returns>
+        public static IPhxMutableMap<TKey, TValue> CopyToMutablePhxMap<TKey, TValue>(
+                this IDictionary<TKey, TValue> collection
         ) {
             return new PhxHashMap<TKey, TValue>(collection);
         }

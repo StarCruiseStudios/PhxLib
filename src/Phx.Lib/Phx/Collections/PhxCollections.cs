@@ -10,22 +10,16 @@ namespace Phx.Collections {
     using System.Collections.Generic;
     using System.Linq;
 
-    /// <summary>
-    ///     Provides methods for initializing Phx collection instances.
-    /// </summary>
+    /// <summary> Provides methods for initializing Phx collection instances. </summary>
     public static class PhxCollections {
-        /// <summary>
-        ///     Gets an immutable empty list.
-        /// </summary>
+        /// <summary> Gets an immutable empty list. </summary>
         /// <typeparam name="T"> The type of elements contained in the list. </typeparam>
         /// <returns> An immutable empty list. </returns>
         public static IPhxList<T> EmptyList<T>() {
             return new ImmutablePhxList<T>();
         }
 
-        /// <summary>
-        ///     Gets an immutable list containing the given elements.
-        /// </summary>
+        /// <summary> Gets an immutable list containing the given elements. </summary>
         /// <typeparam name="T"> The type of elements contained in the list. </typeparam>
         /// <param name="elements"> The elements contained in the list. </param>
         /// <returns> An immutable list containing the given elements. </returns>
@@ -33,9 +27,7 @@ namespace Phx.Collections {
             return new ImmutablePhxList<T>(elements.AsEnumerable());
         }
 
-        /// <summary>
-        ///     Gets an immutable list containing the given elements.
-        /// </summary>
+        /// <summary> Gets an immutable list containing the given elements. </summary>
         /// <typeparam name="T"> The type of elements contained in the list. </typeparam>
         /// <param name="elements"> The elements contained in the list. </param>
         /// <returns> An immutable list containing the given elements. </returns>
@@ -43,38 +35,30 @@ namespace Phx.Collections {
             return new ImmutablePhxList<T>(elements);
         }
 
-        /// <summary>
-        ///     Gets a mutable list containing the given elements.
-        /// </summary>
+        /// <summary> Gets a mutable list containing the given elements. </summary>
         /// <typeparam name="T"> The type of elements contained in the list. </typeparam>
         /// <param name="elements"> The elements contained in the list. </param>
         /// <returns> A mutable list containing the given elements. </returns>
-        public static IMutablePhxList<T> MutableListOf<T>(params T[] elements) {
+        public static IPhxMutableList<T> MutableListOf<T>(params T[] elements) {
             return new PhxArrayList<T>(elements.AsEnumerable());
         }
 
-        /// <summary>
-        ///     Gets a mutable list containing the given elements.
-        /// </summary>
+        /// <summary> Gets a mutable list containing the given elements. </summary>
         /// <typeparam name="T"> The type of elements contained in the list. </typeparam>
         /// <param name="elements"> The elements contained in the list. </param>
         /// <returns> A mutable list containing the given elements. </returns>
-        public static IMutablePhxList<T> MutableListOf<T>(IEnumerable<T> elements) {
+        public static IPhxMutableList<T> MutableListOf<T>(IEnumerable<T> elements) {
             return new PhxArrayList<T>(elements);
         }
 
-        /// <summary>
-        ///     Gets an immutable empty set.
-        /// </summary>
+        /// <summary> Gets an immutable empty set. </summary>
         /// <typeparam name="T"> The type of elements contained in the set. </typeparam>
         /// <returns> An immutable empty set. </returns>
         public static IPhxSet<T> EmptySet<T>() {
             return new ImmutablePhxSet<T>();
         }
 
-        /// <summary>
-        ///     Gets an immutable set containing the given elements.
-        /// </summary>
+        /// <summary> Gets an immutable set containing the given elements. </summary>
         /// <typeparam name="T"> The type of elements contained in the set. </typeparam>
         /// <param name="elements"> The elements contained in the set. </param>
         /// <returns> An immutable set containing the given elements. </returns>
@@ -82,9 +66,7 @@ namespace Phx.Collections {
             return new ImmutablePhxSet<T>(elements.AsEnumerable());
         }
 
-        /// <summary>
-        ///     Gets an immutable set containing the given elements.
-        /// </summary>
+        /// <summary> Gets an immutable set containing the given elements. </summary>
         /// <typeparam name="T"> The type of elements contained in the set. </typeparam>
         /// <param name="elements"> The elements contained in the set. </param>
         /// <returns> An immutable set containing the given elements. </returns>
@@ -92,29 +74,23 @@ namespace Phx.Collections {
             return new ImmutablePhxSet<T>(elements);
         }
 
-        /// <summary>
-        ///     Gets a mutable set containing the given elements.
-        /// </summary>
+        /// <summary> Gets a mutable set containing the given elements. </summary>
         /// <typeparam name="T"> The type of elements contained in the set. </typeparam>
         /// <param name="elements"> The elements contained in the set. </param>
         /// <returns> A mutable set containing the given elements. </returns>
-        public static IMutablePhxSet<T> MutableSetOf<T>(params T[] elements) {
+        public static IPhxMutableSet<T> MutableSetOf<T>(params T[] elements) {
             return new PhxHashSet<T>(elements.AsEnumerable());
         }
 
-        /// <summary>
-        ///     Gets a mutable set containing the given elements.
-        /// </summary>
+        /// <summary> Gets a mutable set containing the given elements. </summary>
         /// <typeparam name="T"> The type of elements contained in the set. </typeparam>
         /// <param name="elements"> The elements contained in the set. </param>
         /// <returns> A mutable set containing the given elements. </returns>
-        public static IMutablePhxSet<T> MutableSetOf<T>(IEnumerable<T> elements) {
+        public static IPhxMutableSet<T> MutableSetOf<T>(IEnumerable<T> elements) {
             return new PhxHashSet<T>(elements);
         }
 
-        /// <summary>
-        ///     Gets an immutable empty map.
-        /// </summary>
+        /// <summary> Gets an immutable empty map. </summary>
         /// <typeparam name="TKey"> The type of object used as a key. </typeparam>
         /// <typeparam name="TValue"> The type of object used as a value. </typeparam>
         /// <returns> An immutable empty map. </returns>
@@ -122,9 +98,7 @@ namespace Phx.Collections {
             return new ImmutablePhxMap<TKey, TValue>();
         }
 
-        /// <summary>
-        ///     Gets an immutable map containing the given elements.
-        /// </summary>
+        /// <summary> Gets an immutable map containing the given elements. </summary>
         /// <typeparam name="TKey"> The type of object used as a key. </typeparam>
         /// <typeparam name="TValue"> The type of object used as a value. </typeparam>
         /// <param name="elements"> The elements contained in the map. </param>
@@ -133,9 +107,7 @@ namespace Phx.Collections {
             return new ImmutablePhxMap<TKey, TValue>(elements);
         }
 
-        /// <summary>
-        ///     Gets an immutable map containing the given elements.
-        /// </summary>
+        /// <summary> Gets an immutable map containing the given elements. </summary>
         /// <typeparam name="TKey"> The type of object used as a key. </typeparam>
         /// <typeparam name="TValue"> The type of object used as a value. </typeparam>
         /// <param name="elements"> The elements contained in the map. </param>
@@ -144,20 +116,16 @@ namespace Phx.Collections {
             return new ImmutablePhxMap<TKey, TValue>(elements);
         }
 
-        /// <summary>
-        ///     Gets an immutable map containing the given elements.
-        /// </summary>
+        /// <summary> Gets an immutable map containing the given elements. </summary>
         /// <typeparam name="TKey"> The type of object used as a key. </typeparam>
         /// <typeparam name="TValue"> The type of object used as a value. </typeparam>
         /// <param name="elements"> The elements contained in the map. </param>
         /// <returns> An immutable map containing the given elements. </returns>
-        public static IPhxMap<TKey, TValue> MapOf<TKey, TValue>(IEnumerable<IPhxPair<TKey, TValue>> elements) {
+        public static IPhxMap<TKey, TValue> MapOf<TKey, TValue>(IEnumerable<IPhxKeyValuePair<TKey, TValue>> elements) {
             return new ImmutablePhxMap<TKey, TValue>(elements);
         }
 
-        /// <summary>
-        ///     Gets an immutable map containing the given elements.
-        /// </summary>
+        /// <summary> Gets an immutable map containing the given elements. </summary>
         /// <typeparam name="TKey"> The type of object used as a key. </typeparam>
         /// <typeparam name="TValue"> The type of object used as a value. </typeparam>
         /// <param name="elements"> The elements contained in the map. </param>
@@ -166,9 +134,7 @@ namespace Phx.Collections {
             return new ImmutablePhxMap<TKey, TValue>(elements.AsEnumerable());
         }
 
-        /// <summary>
-        ///     Gets an immutable map containing the given elements.
-        /// </summary>
+        /// <summary> Gets an immutable map containing the given elements. </summary>
         /// <typeparam name="TKey"> The type of object used as a key. </typeparam>
         /// <typeparam name="TValue"> The type of object used as a value. </typeparam>
         /// <param name="elements"> The elements contained in the map. </param>
@@ -177,60 +143,50 @@ namespace Phx.Collections {
             return new ImmutablePhxMap<TKey, TValue>(elements);
         }
 
-        /// <summary>
-        ///     Gets a mutable map containing the given elements.
-        /// </summary>
+        /// <summary> Gets a mutable map containing the given elements. </summary>
         /// <typeparam name="TKey"> The type of object used as a key. </typeparam>
         /// <typeparam name="TValue"> The type of object used as a value. </typeparam>
         /// <param name="elements"> The elements contained in the map. </param>
         /// <returns> An immutable map containing the given elements. </returns>
-        public static IMutablePhxMap<TKey, TValue> MutableMapOf<TKey, TValue>(IPhxMap<TKey, TValue> elements) {
+        public static IPhxMutableMap<TKey, TValue> MutableMapOf<TKey, TValue>(IPhxMap<TKey, TValue> elements) {
             return new PhxHashMap<TKey, TValue>(elements);
         }
 
-        /// <summary>
-        ///     Gets a mutable map containing the given elements.
-        /// </summary>
+        /// <summary> Gets a mutable map containing the given elements. </summary>
         /// <typeparam name="TKey"> The type of object used as a key. </typeparam>
         /// <typeparam name="TValue"> The type of object used as a value. </typeparam>
         /// <param name="elements"> The elements contained in the map. </param>
         /// <returns> An immutable map containing the given elements. </returns>
-        public static IMutablePhxMap<TKey, TValue> MutableMapOf<TKey, TValue>(IDictionary<TKey, TValue> elements) {
+        public static IPhxMutableMap<TKey, TValue> MutableMapOf<TKey, TValue>(IDictionary<TKey, TValue> elements) {
             return new PhxHashMap<TKey, TValue>(elements);
         }
 
-        /// <summary>
-        ///     Gets a mutable map containing the given elements.
-        /// </summary>
+        /// <summary> Gets a mutable map containing the given elements. </summary>
         /// <typeparam name="TKey"> The type of object used as a key. </typeparam>
         /// <typeparam name="TValue"> The type of object used as a value. </typeparam>
         /// <param name="elements"> The elements contained in the map. </param>
         /// <returns> An immutable map containing the given elements. </returns>
-        public static IMutablePhxMap<TKey, TValue> MutableMapOf<TKey, TValue>(
-            IEnumerable<IPhxPair<TKey, TValue>> elements
+        public static IPhxMutableMap<TKey, TValue> MutableMapOf<TKey, TValue>(
+                IEnumerable<IPhxKeyValuePair<TKey, TValue>> elements
         ) {
             return new PhxHashMap<TKey, TValue>(elements);
         }
 
-        /// <summary>
-        ///     Gets a mutable map containing the given elements.
-        /// </summary>
+        /// <summary> Gets a mutable map containing the given elements. </summary>
         /// <typeparam name="TKey"> The type of object used as a key. </typeparam>
         /// <typeparam name="TValue"> The type of object used as a value. </typeparam>
         /// <param name="elements"> The elements contained in the map. </param>
         /// <returns> An immutable map containing the given elements. </returns>
-        public static IMutablePhxMap<TKey, TValue> MutableMapOf<TKey, TValue>(params (TKey, TValue)[] elements) {
+        public static IPhxMutableMap<TKey, TValue> MutableMapOf<TKey, TValue>(params (TKey, TValue)[] elements) {
             return new PhxHashMap<TKey, TValue>(elements.AsEnumerable());
         }
 
-        /// <summary>
-        ///     Gets a mutable map containing the given elements.
-        /// </summary>
+        /// <summary> Gets a mutable map containing the given elements. </summary>
         /// <typeparam name="TKey"> The type of object used as a key. </typeparam>
         /// <typeparam name="TValue"> The type of object used as a value. </typeparam>
         /// <param name="elements"> The elements contained in the map. </param>
         /// <returns> An immutable map containing the given elements. </returns>
-        public static IMutablePhxMap<TKey, TValue> MutableMapOf<TKey, TValue>(IEnumerable<(TKey, TValue)> elements) {
+        public static IPhxMutableMap<TKey, TValue> MutableMapOf<TKey, TValue>(IEnumerable<(TKey, TValue)> elements) {
             return new PhxHashMap<TKey, TValue>(elements);
         }
     }

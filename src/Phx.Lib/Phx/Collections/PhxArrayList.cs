@@ -15,11 +15,9 @@ namespace Phx.Collections {
     using Phx.Debug;
     using Phx.Lang;
 
-    /// <summary>
-    ///     A mutable collection that contains an ordered list of items.
-    /// </summary>
+    /// <summary> A mutable collection that contains an ordered list of items. </summary>
     /// <typeparam name="T"> The type of item contained in the set. </typeparam>
-    public sealed class PhxArrayList<T> : IMutablePhxList<T>, IDebugDisplay {
+    public sealed class PhxArrayList<T> : IPhxMutableList<T>, IDebugDisplay {
         private readonly List<T> internalList;
 
         /// <inheritdoc />
@@ -31,36 +29,26 @@ namespace Phx.Collections {
         /// <inheritdoc />
         public int Count => internalList.Count;
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="PhxArrayList{T}"/> class.
-        /// </summary>
+        /// <summary> Initializes a new instance of the <see cref="PhxArrayList{T}" /> class. </summary>
         public PhxArrayList() {
             internalList = new List<T>();
         }
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="PhxArrayList{T}"/> class.
-        /// </summary>
+        /// <summary> Initializes a new instance of the <see cref="PhxArrayList{T}" /> class. </summary>
         /// <param name="elements"> The elements to initialize the collection with. </param>
         public PhxArrayList(IEnumerable<T> elements) {
             internalList = new List<T>(elements);
         }
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="PhxArrayList{T}"/> class.
-        /// </summary>
+        /// <summary> Initializes a new instance of the <see cref="PhxArrayList{T}" /> class. </summary>
         /// <param name="elements"> The elements to initialize the collection with. </param>
         public PhxArrayList(params T[] elements) : this(elements.AsEnumerable()) { }
 
-        public bool Contains(T item) {
-            return internalList.Contains(item);
+        /// <inheritdoc />
+        public int CountWhere(Predicate<T> predicate) {
+            return internalList.Count(predicate.Invoke);
         }
-        public bool ContainsAny(IEnumerable<T> items) {
-            return items.Any(internalList.Contains);
-        }
-        public bool ContainsAll(IEnumerable<T> items) {
-            return items.All(internalList.Contains);
-        }
+
         /// <inheritdoc />
         public bool Add(T item) {
             internalList.Add(item);
@@ -79,6 +67,11 @@ namespace Phx.Collections {
         }
 
         /// <inheritdoc />
+        public bool Contains(T item) {
+            return internalList.Contains(item);
+        }
+
+        /// <inheritdoc />
         public bool Contains(object item) {
             return item is T t && internalList.Contains(t);
         }
@@ -90,7 +83,13 @@ namespace Phx.Collections {
                     return false;
                 }
             }
+
             return true;
+        }
+
+        /// <inheritdoc />
+        public bool ContainsAll(IEnumerable<T> items) {
+            return items.All(internalList.Contains);
         }
 
         /// <inheritdoc />
@@ -105,7 +104,13 @@ namespace Phx.Collections {
                     return true;
                 }
             }
+
             return false;
+        }
+
+        /// <inheritdoc />
+        public bool ContainsAny(IEnumerable<T> items) {
+            return items.Any(internalList.Contains);
         }
 
         /// <inheritdoc />
@@ -129,11 +134,19 @@ namespace Phx.Collections {
             if (item is not T i) {
                 return Result.Failure<int, Unit>(Unit.UNIT);
             }
-            
+
             var index = internalList.IndexOf(i);
             return index < 0
-                ? Result.Failure<int, Unit>(Unit.UNIT)
-                : Result.Success<int, Unit>(index);
+                    ? Result.Failure<int, Unit>(Unit.UNIT)
+                    : Result.Success<int, Unit>(index);
+        }
+
+        /// <inheritdoc />
+        public IResult<int, Unit> IndexOfFirst(Predicate<T> predicate) {
+            var index = internalList.FindIndex(predicate);
+            return index < 0
+                    ? Result.Failure<int, Unit>(Unit.UNIT)
+                    : Result.Success<int, Unit>(index);
         }
 
         /// <inheritdoc />
@@ -141,11 +154,19 @@ namespace Phx.Collections {
             if (item is not T i) {
                 return Result.Failure<int, Unit>(Unit.UNIT);
             }
-            
+
             var index = internalList.LastIndexOf(i);
             return index < 0
-                ? Result.Failure<int, Unit>(Unit.UNIT)
-                : Result.Success<int, Unit>(index);
+                    ? Result.Failure<int, Unit>(Unit.UNIT)
+                    : Result.Success<int, Unit>(index);
+        }
+
+        /// <inheritdoc />
+        public IResult<int, Unit> IndexOfLast(Predicate<T> predicate) {
+            var index = internalList.FindLastIndex(predicate);
+            return index < 0
+                    ? Result.Failure<int, Unit>(Unit.UNIT)
+                    : Result.Success<int, Unit>(index);
         }
 
         /// <inheritdoc />
@@ -157,8 +178,17 @@ namespace Phx.Collections {
 
             var index = internalList.IndexOf(i, startingIndex);
             return index < 0
-                ? Result.Failure<int, Unit>(Unit.UNIT)
-                : Result.Success<int, Unit>(index);
+                    ? Result.Failure<int, Unit>(Unit.UNIT)
+                    : Result.Success<int, Unit>(index);
+        }
+
+        /// <inheritdoc />
+        public IResult<int, Unit> IndexOfNext(Predicate<T> predicate, int startingIndex) {
+            this.RequireIndexInBounds(startingIndex);
+            var index = internalList.FindIndex(startingIndex, predicate);
+            return index < 0
+                    ? Result.Failure<int, Unit>(Unit.UNIT)
+                    : Result.Success<int, Unit>(index);
         }
 
         /// <inheritdoc />
@@ -224,6 +254,7 @@ namespace Phx.Collections {
             foreach (var element in this) {
                 _ = builder.Append(element).Append(" ");
             }
+
             return builder.Append("]").ToString();
         }
 

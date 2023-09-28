@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------------
-//  <copyright file="PhxMultiMap.cs" company="Star Cruise Studios LLC">
+//  <copyright file="PhxArrayListMultiMap.cs" company="Star Cruise Studios LLC">
 //      Copyright (c) 2023 Star Cruise Studios LLC. All rights reserved.
 //      Licensed under the Apache License, Version 2.0.
 //      See http://www.apache.org/licenses/LICENSE-2.0 for full license information.
@@ -7,35 +7,58 @@
 // -----------------------------------------------------------------------------
 
 namespace Phx.Collections {
+    using System;
     using System.Collections.Generic;
     using System.Text;
     using Phx.Debug;
     using Phx.Lang;
 
-    /// <summary>
-    ///     A mutable collection of mappings from a key to a list of one or more values.
-    /// </summary>
+    /// <summary> A mutable collection of mappings from a key to a list of one or more values. </summary>
     /// <typeparam name="TKey"> The type of object used as a key. </typeparam>
     /// <typeparam name="TValue"> The type of object used as a value. </typeparam>
-    public sealed class PhxArrayListMultiMap<TKey, TValue> : IMutablePhxMultiMap<TKey, TValue>, IDebugDisplay {
-        private readonly IMutablePhxMap<TKey, IMutablePhxList<TValue>> internalMap;
+    public sealed class PhxArrayListMultiMap<TKey, TValue> : IPhxMutableMultiMap<TKey, TValue>, IDebugDisplay {
+        private readonly IPhxMutableMap<TKey, IPhxMutableList<TValue>> internalMap;
 
         /// <inheritdoc />
-        public IPhxCollection<TValue> this[TKey key] { get => this.GetOrThrow(key); }
-
-        /// <inheritdoc />
-        public IPhxCollection<IPhxPair<TKey, IPhxCollection<TValue>>> Entries {
-            get => (IPhxSet<IPhxPair<TKey, IPhxCollection<TValue>>>) internalMap.Entries;
+        public IPhxCollection<TValue> this[TKey key] {
+            get => this.GetOrThrow(key);
         }
 
         /// <inheritdoc />
-        public IPhxSet<TKey> Keys { get => internalMap.Keys; }
+        IPhxMutableCollection<TValue> IPhxMutableMultiMap<TKey, TValue>.this[TKey key] {
+            get => this.GetOrThrow(key);
+        }
 
         /// <inheritdoc />
-        public IPhxCollection<IPhxCollection<TValue>> Values { get => internalMap.Values; }
+        public IPhxCollection<IPhxKeyValuePair<TKey, IPhxCollection<TValue>>> Entries {
+            get => (IPhxSet<IPhxKeyValuePair<TKey, IPhxCollection<TValue>>>)internalMap.Entries;
+        }
 
         /// <inheritdoc />
-        public int KeyCount { get { return internalMap.Count; } }
+        IPhxCollection<IPhxKeyValuePair<TKey, IPhxMutableCollection<TValue>>> IPhxMutableMultiMap<TKey, TValue>.
+                Entries {
+            get => (IPhxSet<IPhxKeyValuePair<TKey, IPhxMutableCollection<TValue>>>)internalMap.Entries;
+        }
+
+        /// <inheritdoc />
+        public IPhxSet<TKey> Keys {
+            get => internalMap.Keys;
+        }
+
+        /// <inheritdoc />
+        public IPhxCollection<IPhxCollection<TValue>> Values {
+            get => internalMap.Values;
+        }
+
+        /// <inheritdoc />
+        IPhxCollection<IPhxMutableCollection<TValue>> IPhxMutableMultiMap<TKey, TValue>.Values {
+            get => internalMap.Values;
+        }
+
+        /// <inheritdoc />
+        public int Count {
+            get { return internalMap.Count; }
+        }
 
         /// <inheritdoc />
         public int ElementCount {
@@ -49,11 +72,14 @@ namespace Phx.Collections {
             }
         }
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="PhxHashMap{TKey, TValue}"/> class.
-        /// </summary>
+        /// <summary> Initializes a new instance of the <see cref="PhxHashMap{TKey, TValue}" /> class. </summary>
         public PhxArrayListMultiMap() {
-            internalMap = PhxCollections.MutableMapOf<TKey, IMutablePhxList<TValue>>();
+            internalMap = PhxCollections.MutableMapOf<TKey, IPhxMutableList<TValue>>();
+        }
+
+        /// <inheritdoc />
+        public int CountWhere(Predicate<IPhxKeyValuePair<TKey, IPhxCollection<TValue>>> predicate) {
+            return internalMap.CountWhere(predicate);
         }
 
         /// <inheritdoc />
@@ -67,8 +93,13 @@ namespace Phx.Collections {
         }
 
         /// <inheritdoc />
+        IResult<IPhxMutableCollection<TValue>, Unit> IPhxMutableMultiMap<TKey, TValue>.Get(TKey key) {
+            return internalMap.Get(key).Map<IPhxMutableCollection<TValue>>(val => val);
+        }
+
+        /// <inheritdoc />
         public bool Add(TKey key, TValue value) {
-            IMutablePhxList<TValue> list = internalMap.GetOrInsert(key, () => PhxCollections.MutableListOf<TValue>());
+            IPhxMutableList<TValue> list = internalMap.GetOrInsert(key, () => PhxCollections.MutableListOf<TValue>());
             return list.Add(value);
         }
 
@@ -80,6 +111,7 @@ namespace Phx.Collections {
                     count++;
                 }
             }
+
             return count;
         }
 
@@ -87,7 +119,8 @@ namespace Phx.Collections {
         public int AddAll(IPhxMultiMap<TKey, TValue> values) {
             int count = 0;
             foreach (var entry in values.Entries) {
-                IMutablePhxList<TValue> list = internalMap.GetOrInsert(entry.Key, () => PhxCollections.MutableListOf<TValue>());
+                IPhxMutableList<TValue> list =
+                        internalMap.GetOrInsert(entry.Key, () => PhxCollections.MutableListOf<TValue>());
                 count += list.AddAll(entry.Value);
             }
 
@@ -102,6 +135,7 @@ namespace Phx.Collections {
                     count++;
                 }
             }
+
             return count;
         }
 
@@ -112,9 +146,10 @@ namespace Phx.Collections {
 
         /// <inheritdoc />
         public bool Remove(TKey key, TValue value) {
-            if (internalMap.Get(key) is Success<IMutablePhxList<TValue>, Unit> success) {
+            if (internalMap.Get(key) is Success<IPhxMutableList<TValue>, Unit> success) {
                 return success.Result.Remove(value);
             }
+
             return false;
         }
 
@@ -131,6 +166,7 @@ namespace Phx.Collections {
                         .Append(":").Append(entry.Value.ToDebugDisplayString())
                         .Append(" } ");
             }
+
             return builder.Append("]").ToString();
         }
 

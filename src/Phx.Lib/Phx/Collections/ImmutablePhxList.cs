@@ -15,9 +15,7 @@ namespace Phx.Collections {
     using Phx.Debug;
     using Phx.Lang;
 
-    /// <summary>
-    ///     An immutable collection that contains an ordered list of items.
-    /// </summary>
+    /// <summary> An immutable collection that contains an ordered list of items. </summary>
     /// <typeparam name="T"> The type of item contained in the collection. </typeparam>
     public sealed class ImmutablePhxList<T> : IPhxList<T>, IDebugDisplay {
         private readonly List<T> internalList;
@@ -30,18 +28,19 @@ namespace Phx.Collections {
         /// <inheritdoc />
         public int Count => internalList.Count;
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="ImmutablePhxList{T}"/> class.
-        /// </summary>
+        /// <summary> Initializes a new instance of the <see cref="ImmutablePhxList{T}" /> class. </summary>
         /// <param name="elements"> The elements to initialize the collection with. </param>
         public ImmutablePhxList(IEnumerable<T> elements) {
             internalList = new List<T>(elements);
         }
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="ImmutablePhxList{T}"/> class.
-        /// </summary>
+        /// <summary> Initializes a new instance of the <see cref="ImmutablePhxList{T}" /> class. </summary>
         /// <param name="elements"> The elements to initialize the collection with. </param>
         public ImmutablePhxList(params T[] elements) : this(elements.AsEnumerable()) { }
+
+        /// <inheritdoc />
+        public int CountWhere(Predicate<T> predicate) {
+            return internalList.Count(predicate.Invoke);
+        }
 
         /// <inheritdoc />
         public bool Contains(object item) {
@@ -55,6 +54,7 @@ namespace Phx.Collections {
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -70,6 +70,7 @@ namespace Phx.Collections {
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -78,7 +79,7 @@ namespace Phx.Collections {
             this.RequireIndexInBounds(index);
             return internalList[index];
         }
-        
+
         /// <inheritdoc />
         public IEnumerator<T> GetEnumerator() {
             return internalList.GetEnumerator();
@@ -94,11 +95,19 @@ namespace Phx.Collections {
             if (item is not T i) {
                 return Result.Failure<int, Unit>(Unit.UNIT);
             }
-            
+
             var index = internalList.IndexOf(i);
             return index < 0
-                ? Result.Failure<int, Unit>(Unit.UNIT)
-                : Result.Success<int, Unit>(index);
+                    ? Result.Failure<int, Unit>(Unit.UNIT)
+                    : Result.Success<int, Unit>(index);
+        }
+
+        /// <inheritdoc />
+        public IResult<int, Unit> IndexOfFirst(Predicate<T> predicate) {
+            var index = internalList.FindIndex(predicate);
+            return index < 0
+                    ? Result.Failure<int, Unit>(Unit.UNIT)
+                    : Result.Success<int, Unit>(index);
         }
 
         /// <inheritdoc />
@@ -109,8 +118,16 @@ namespace Phx.Collections {
 
             var index = internalList.LastIndexOf(i);
             return index < 0
-                ? Result.Failure<int, Unit>(Unit.UNIT)
-                : Result.Success<int, Unit>(index);
+                    ? Result.Failure<int, Unit>(Unit.UNIT)
+                    : Result.Success<int, Unit>(index);
+        }
+
+        /// <inheritdoc />
+        public IResult<int, Unit> IndexOfLast(Predicate<T> predicate) {
+            var index = internalList.FindLastIndex(predicate);
+            return index < 0
+                    ? Result.Failure<int, Unit>(Unit.UNIT)
+                    : Result.Success<int, Unit>(index);
         }
 
         /// <inheritdoc />
@@ -122,8 +139,17 @@ namespace Phx.Collections {
 
             var index = internalList.IndexOf(i, startingIndex);
             return index < 0
-                ? Result.Failure<int, Unit>(Unit.UNIT)
-                : Result.Success<int, Unit>(index);
+                    ? Result.Failure<int, Unit>(Unit.UNIT)
+                    : Result.Success<int, Unit>(index);
+        }
+
+        /// <inheritdoc />
+        public IResult<int, Unit> IndexOfNext(Predicate<T> predicate, int startingIndex) {
+            this.RequireIndexInBounds(startingIndex);
+            var index = internalList.FindIndex(startingIndex, predicate);
+            return index < 0
+                    ? Result.Failure<int, Unit>(Unit.UNIT)
+                    : Result.Success<int, Unit>(index);
         }
 
         /// <inheritdoc />
@@ -132,6 +158,7 @@ namespace Phx.Collections {
             foreach (var element in this) {
                 _ = builder.Append(element).Append(" ");
             }
+
             return builder.Append("]").ToString();
         }
 

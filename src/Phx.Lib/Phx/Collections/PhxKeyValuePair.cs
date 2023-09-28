@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-//  <copyright file="PhxPair.cs" company="Star Cruise Studios LLC">
+//  <copyright file="PhxKeyValuePair.cs" company="Star Cruise Studios LLC">
 //      Copyright (c) 2023 Star Cruise Studios LLC. All rights reserved.
 //      Licensed under the Apache License, Version 2.0.
 //      See http://www.apache.org/licenses/LICENSE-2.0 for full license information.
@@ -12,18 +12,18 @@ namespace Phx.Collections {
     using Phx.Debug;
     using Phx.Lang;
 
-    public class PhxPair<TKey, TValue> : IPhxPair<TKey, TValue>, IDebugDisplay {
+    public class PhxKeyValuePair<TKey, TValue> : IPhxKeyValuePair<TKey, TValue>, IDebugDisplay {
         public TKey Key { get; }
 
         public TValue Value { get; }
 
-        public PhxPair(TKey key, TValue value) {
+        public PhxKeyValuePair(TKey key, TValue value) {
             Key = key;
             Value = value;
         }
 
         public override bool Equals(object? obj) {
-            return obj is IPhxPair<TKey, TValue> pair &&
+            return obj is IPhxKeyValuePair<TKey, TValue> pair &&
                     EqualityComparer<TKey>.Default.Equals(Key, pair.Key) &&
                     EqualityComparer<TValue>.Default.Equals(Value, pair.Value);
         }
