@@ -39,8 +39,8 @@ namespace Phx.Lang {
         /// <summary> Converts the input string to the given string casing. </summary>
         /// <param name="casing"> The string casing to convert to. </param>
         /// <returns>
-        ///     A result containing the converted string, or an InvalidOperationException if the conversion could not be
-        ///     performed.
+        ///     A result containing the converted string, or an InvalidOperationException if the
+        ///     conversion could not be performed.
         /// </returns>
         public Result<string, InvalidOperationException> ToCase(StringCasing casing) {
             return casing switch {
@@ -56,8 +56,8 @@ namespace Phx.Lang {
 
         /// <summary> Converts the input string to camel casing. </summary>
         /// <returns>
-        ///     A result containing the converted string, or an InvalidOperationException if the conversion could not be
-        ///     performed.
+        ///     A result containing the converted string, or an InvalidOperationException if the
+        ///     conversion could not be performed.
         /// </returns>
         public Result<string, InvalidOperationException> ToCamelCase() {
             if (!IsValid) {
@@ -73,8 +73,8 @@ namespace Phx.Lang {
 
         /// <summary> Converts the input string to caps casing. </summary>
         /// <returns>
-        ///     A result containing the converted string, or an InvalidOperationException if the conversion could not be
-        ///     performed.
+        ///     A result containing the converted string, or an InvalidOperationException if the
+        ///     conversion could not be performed.
         /// </returns>
         public Result<string, InvalidOperationException> ToCapsCase() {
             if (!IsValid) {
@@ -89,8 +89,8 @@ namespace Phx.Lang {
 
         /// <summary> Converts the input string to kebab casing. </summary>
         /// <returns>
-        ///     A result containing the converted string, or an InvalidOperationException if the conversion could not be
-        ///     performed.
+        ///     A result containing the converted string, or an InvalidOperationException if the
+        ///     conversion could not be performed.
         /// </returns>
         public Result<string, InvalidOperationException> ToKebabCase() {
             if (!IsValid) {
@@ -104,8 +104,8 @@ namespace Phx.Lang {
 
         /// <summary> Converts the input string to pascal casing. </summary>
         /// <returns>
-        ///     A result containing the converted string, or an InvalidOperationException if the conversion could not be
-        ///     performed.
+        ///     A result containing the converted string, or an InvalidOperationException if the
+        ///     conversion could not be performed.
         /// </returns>
         public Result<string, InvalidOperationException> ToPascalCase() {
             if (!IsValid) {
@@ -120,8 +120,8 @@ namespace Phx.Lang {
 
         /// <summary> Converts the input string to snake casing. </summary>
         /// <returns>
-        ///     A result containing the converted string, or an InvalidOperationException if the conversion could not be
-        ///     performed.
+        ///     A result containing the converted string, or an InvalidOperationException if the
+        ///     conversion could not be performed.
         /// </returns>
         public Result<string, InvalidOperationException> ToSnakeCase() {
             if (!IsValid) {
@@ -137,8 +137,8 @@ namespace Phx.Lang {
         /// <param name="casing"> The string casing to parse from. </param>
         /// <param name="originalString"> The original string to parse. </param>
         /// <returns>
-        ///     A StringCasingConverter that can be used to convert to another casing or to check if the input string is a
-        ///     valid representation of the input casing.
+        ///     A StringCasingConverter that can be used to convert to another casing or to check if the
+        ///     input string is a valid representation of the input casing.
         /// </returns>
         public static StringCasingConverter FromCase(StringCasing casing, string originalString) {
             return casing switch {
@@ -155,8 +155,8 @@ namespace Phx.Lang {
         /// <summary> Parses a string as a camel case string. </summary>
         /// <param name="originalString"> The original string to parse. </param>
         /// <returns>
-        ///     A StringCasingConverter that can be used to convert to another casing or to check if the input string is a
-        ///     valid representation of the input casing.
+        ///     A StringCasingConverter that can be used to convert to another casing or to check if the
+        ///     input string is a valid representation of the input casing.
         /// </returns>
         public static StringCasingConverter FromCamelCase(string originalString) {
             var words = new List<string>();
@@ -192,8 +192,8 @@ namespace Phx.Lang {
         /// <summary> Parses a string as a caps case string. </summary>
         /// <param name="originalString"> The original string to parse. </param>
         /// <returns>
-        ///     A StringCasingConverter that can be used to convert to another casing or to check if the input string is a
-        ///     valid representation of the input casing.
+        ///     A StringCasingConverter that can be used to convert to another casing or to check if the
+        ///     input string is a valid representation of the input casing.
         /// </returns>
         public static StringCasingConverter FromCapsCase(string originalString) {
             var words = new List<string>();
@@ -231,8 +231,8 @@ namespace Phx.Lang {
         /// <summary> Parses a string as a kebab case string. </summary>
         /// <param name="originalString"> The original string to parse. </param>
         /// <returns>
-        ///     A StringCasingConverter that can be used to convert to another casing or to check if the input string is a
-        ///     valid representation of the input casing.
+        ///     A StringCasingConverter that can be used to convert to another casing or to check if the
+        ///     input string is a valid representation of the input casing.
         /// </returns>
         public static StringCasingConverter FromKebabCase(string originalString) {
             var words = new List<string>();
@@ -269,8 +269,8 @@ namespace Phx.Lang {
         /// <summary> Parses a string as a pascal case string. </summary>
         /// <param name="originalString"> The original string to parse. </param>
         /// <returns>
-        ///     A StringCasingConverter that can be used to convert to another casing or to check if the input string is a
-        ///     valid representation of the input casing.
+        ///     A StringCasingConverter that can be used to convert to another casing or to check if the
+        ///     input string is a valid representation of the input casing.
         /// </returns>
         public static StringCasingConverter FromPascalCase(string originalString) {
             var words = new List<string>();
@@ -312,8 +312,8 @@ namespace Phx.Lang {
         /// <summary> Parses a string as a snake case string. </summary>
         /// <param name="originalString"> The original string to parse. </param>
         /// <returns>
-        ///     A StringCasingConverter that can be used to convert to another casing or to check if the input string is a
-        ///     valid representation of the input casing.
+        ///     A StringCasingConverter that can be used to convert to another casing or to check if the
+        ///     input string is a valid representation of the input casing.
         /// </returns>
         public static StringCasingConverter FromSnakeCase(string originalString) {
             var words = new List<string>();

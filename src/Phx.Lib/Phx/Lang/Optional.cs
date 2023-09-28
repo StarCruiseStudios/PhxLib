@@ -28,8 +28,8 @@ namespace Phx.Lang {
         /// <summary> Gets the value contained by the <see cref="Optional{T}" /> if non-empty. </summary>
         /// <value> The value. </value>
         /// <exception cref="InvalidOperationException">
-        ///     Thrown if this method is invoked when this <see cref="Optional{T}" /> is
-        ///     empty.
+        ///     Thrown if this method is invoked when this
+        ///     <see cref="Optional{T}" /> is empty.
         /// </exception>
         public T Value {
             get {
@@ -45,8 +45,8 @@ namespace Phx.Lang {
         }
 
         /// <summary>
-        ///     InvokesIf a value is present in the <see cref="Optional{T}" />, the specified action is invoked with the
-        ///     contained value passed as an argument.
+        ///     InvokesIf a value is present in the <see cref="Optional{T}" />, the specified action is
+        ///     invoked with the contained value passed as an argument.
         /// </summary>
         /// <param name="action"> The action to invoke. </param>
         public void IfPresent(Action<T> action) {
@@ -64,11 +64,14 @@ namespace Phx.Lang {
         }
 
         /// <summary>
-        ///     Applies the given mapping function to the value contained in the <see cref="Optional{T}" /> if one is
-        ///     present. Otherwise, an empty optional is returned.
+        ///     Applies the given mapping function to the value contained in the
+        ///     <see cref="Optional{T}" /> if one is present. Otherwise, an empty optional is returned.
         /// </summary>
         /// <typeparam name="U"> The type of value contained in the output <see cref="Optional{U}" />. </typeparam>
-        /// <param name="mapper"> The mapping function applied to the value if the <see cref="Optional{T}" /> is present. </param>
+        /// <param name="mapper">
+        ///     The mapping function applied to the value if the <see cref="Optional{T}" />
+        ///     is present.
+        /// </param>
         public Optional<U> Map<U>(Func<T, Optional<U>> mapper) where U : notnull {
             if (IsPresent) {
                 return mapper(value);
@@ -78,10 +81,13 @@ namespace Phx.Lang {
         }
 
         /// <summary>
-        ///     Returns the value contained inside of the <see cref="Optional{T}" /> if it is present. Otherwise, the value
-        ///     computed by the given function is returned.
+        ///     Returns the value contained inside of the <see cref="Optional{T}" /> if it is present.
+        ///     Otherwise, the value computed by the given function is returned.
         /// </summary>
-        /// <param name="other"> The function that computes the output value if the <see cref="Optional{T}" /> is empty. </param>
+        /// <param name="other">
+        ///     The function that computes the output value if the <see cref="Optional{T}" />
+        ///     is empty.
+        /// </param>
         public T OrElse(Func<T> other) {
             return IsPresent
                     ? value
@@ -89,10 +95,13 @@ namespace Phx.Lang {
         }
 
         /// <summary>
-        ///     Returns the value contained inside of the <see cref="Optional{T}" /> if it is present. Otherwise, the value
-        ///     computed by the given function is returned.
+        ///     Returns the value contained inside of the <see cref="Optional{T}" /> if it is present.
+        ///     Otherwise, the value computed by the given function is returned.
         /// </summary>
-        /// <param name="other"> The function that computes the output value if the <see cref="Optional{T}" /> is empty. </param>
+        /// <param name="other">
+        ///     The function that computes the output value if the <see cref="Optional{T}" />
+        ///     is empty.
+        /// </param>
         public Optional<T> OrTry(Func<Optional<T>> other) {
             return IsPresent
                     ? this
@@ -100,11 +109,17 @@ namespace Phx.Lang {
         }
 
         /// <summary>
-        ///     Returns the value contained inside of the <see cref="Optional{T}" /> if it is present. Otherwise, the
-        ///     exception returned by the given function is returned.
+        ///     Returns the value contained inside of the <see cref="Optional{T}" /> if it is present.
+        ///     Otherwise, the exception returned by the given function is returned.
         /// </summary>
-        /// <param name="exception"> The function that provides the exception to throw if the <see cref="Optional{T}" /> is empty. </param>
-        /// <exception cref="Exception"> thrown if this method is invoked and the <see cref="Optional{T}" /> is empty. </exception>
+        /// <param name="exception">
+        ///     The function that provides the exception to throw if the
+        ///     <see cref="Optional{T}" /> is empty.
+        /// </param>
+        /// <exception cref="Exception">
+        ///     thrown if this method is invoked and the <see cref="Optional{T}" /> is
+        ///     empty.
+        /// </exception>
         public T OrElseThrow(Func<Exception> exception) {
             return IsPresent
                     ? value
@@ -129,8 +144,8 @@ namespace Phx.Lang {
         }
 
         /// <summary>
-        ///     Returns an <see cref="Optional{T}" /> with the provided non-null value, or <see cref="Optional{T}.EMPTY" />
-        ///     if the provided value is null.
+        ///     Returns an <see cref="Optional{T}" /> with the provided non-null value, or
+        ///     <see cref="Optional{T}.EMPTY" /> if the provided value is null.
         /// </summary>
         /// <param name="value"> The value to contain in the <see cref="Optional{T}" />. </param>
         public static Optional<T> OfNullable(T? value) {

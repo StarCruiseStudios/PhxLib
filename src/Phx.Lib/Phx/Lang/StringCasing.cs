@@ -10,32 +10,32 @@ namespace Phx.Lang {
     /// <summary> Enumerates the supported string casings. </summary>
     public enum StringCasing {
         /// <summary>
-        ///     Only alphanumeric characters. Each word starts with an uppercase letter. String starts with a lowercase
-        ///     letter.
+        ///     Only alphanumeric characters. Each word starts with an uppercase letter. String starts
+        ///     with a lowercase letter.
         /// </summary>
         Camel,
 
         /// <summary>
-        ///     Only alphanumeric characters and underscores. All letters uppercase. Words separated by a single underscore.
-        ///     Leading underscores are ignored. String starts with a letter.
+        ///     Only alphanumeric characters and underscores. All letters uppercase. Words separated by a
+        ///     single underscore. Leading underscores are ignored. String starts with a letter.
         /// </summary>
         Caps,
 
         /// <summary>
-        ///     Only alphanumeric characters and hyphens. All letters lowercase. Words separated by a single hyphen. String
-        ///     starts with a letter.
+        ///     Only alphanumeric characters and hyphens. All letters lowercase. Words separated by a
+        ///     single hyphen. String starts with a letter.
         /// </summary>
         Kebab,
 
         /// <summary>
-        ///     Only alphanumeric characters. Each word starts with an uppercase letter. String starts with an uppercase
-        ///     letter.
+        ///     Only alphanumeric characters. Each word starts with an uppercase letter. String starts
+        ///     with an uppercase letter.
         /// </summary>
         Pascal,
 
         /// <summary>
-        ///     Only alphanumeric characters and underscores. All letters lowercase. Words separated by a single underscore.
-        ///     Leading underscores are ignored. String starts with a letter.
+        ///     Only alphanumeric characters and underscores. All letters lowercase. Words separated by a
+        ///     single underscore. Leading underscores are ignored. String starts with a letter.
         /// </summary>
         Snake
     }

@@ -15,8 +15,8 @@ namespace Phx.Lang {
         private const string DEFAULT_MESSAGE = "One or more unexpected exceptions occurred.";
 
         /// <summary>
-        ///     Executes the each of the given <paramref name="actions" />, and throws all resulting exceptions as an
-        ///     <see cref="AggregateException" />.
+        ///     Executes the each of the given <paramref name="actions" />, and throws all resulting
+        ///     exceptions as an <see cref="AggregateException" />.
         /// </summary>
         /// <remarks> All actions are guaranteed to be run. </remarks>
         /// <param name="actions"> The collection of <see cref="Action"> s to execute. </param>
@@ -26,8 +26,8 @@ namespace Phx.Lang {
         }
 
         /// <summary>
-        ///     Executes the each of the given <paramref name="actions" />, and throws all resulting exceptions as an
-        ///     <see cref="AggregateException" />.
+        ///     Executes the each of the given <paramref name="actions" />, and throws all resulting
+        ///     exceptions as an <see cref="AggregateException" />.
         /// </summary>
         /// <remarks> All actions are guaranteed to be run. </remarks>
         /// <param name="message"> The message to use if any of the actions throw an exception. </param>
@@ -38,8 +38,8 @@ namespace Phx.Lang {
         }
 
         /// <summary>
-        ///     Executes the each of the given <paramref name="actions" />, and throws all resulting exceptions as an
-        ///     <see cref="AggregateException" />.
+        ///     Executes the each of the given <paramref name="actions" />, and throws all resulting
+        ///     exceptions as an <see cref="AggregateException" />.
         /// </summary>
         /// <remarks> All actions are guaranteed to be run. </remarks>
         /// <param name="actions"> The collection of <see cref="Action"> s to execute. </param>
@@ -49,8 +49,8 @@ namespace Phx.Lang {
         }
 
         /// <summary>
-        ///     Executes the each of the given <paramref name="actions" />, and throws all resulting exceptions as an
-        ///     <see cref="AggregateException" />.
+        ///     Executes the each of the given <paramref name="actions" />, and throws all resulting
+        ///     exceptions as an <see cref="AggregateException" />.
         /// </summary>
         /// <remarks> All actions are guaranteed to be run. </remarks>
         /// <param name="message"> The message to use if any of the actions throw an exception. </param>
@@ -73,8 +73,7 @@ namespace Phx.Lang {
 
         /// <summary>
         ///     Executes the given <paramref name="action" /> on each of the given
-        ///     <paramref name="items"/>, and throws all
-        ///               resulting exceptions as an
+        ///     <paramref name="items" />, and throws all resulting exceptions as an
         ///     <see cref="AggregateException" />.
         /// </summary>
         /// <remarks> All actions are guaranteed to be run. </remarks>

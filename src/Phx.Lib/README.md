@@ -3,10 +3,10 @@
 PHX.Lib core utilities and extensions.
 
 Contained in this package:
+
 * **PHX.Debug:** Utilities that assist in the debugging of code.
 * **PHX.Dev:** Utilities that assist in development tasks and documentation.
 * **PHX.Lang:** Utilities that add or extend language features.
-
 
 ## Set up
 

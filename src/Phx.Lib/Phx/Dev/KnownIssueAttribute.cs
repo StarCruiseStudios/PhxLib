@@ -10,14 +10,17 @@ namespace Phx.Dev {
     using System;
     using Phx.Lang;
 
-    /// <summary> An attribute used to indicate that there is a known issue with the behavior or definition of a code element. </summary>
+    /// <summary>
+    ///     An attribute used to indicate that there is a known issue with the behavior or definition
+    ///     of a code element.
+    /// </summary>
     [AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = true)]
     public sealed class KnownIssueAttribute : Attribute {
         /// <summary> Initializes a new instance of the <see cref="KnownIssueAttribute" /> class. </summary>
         /// <param name="description"> A description of the issue. </param>
         /// <param name="workaround">
-        ///     An optional description of the workaround that is implemented or that can be used to avoid
-        ///     the issue.
+        ///     An optional description of the workaround that is implemented or that can
+        ///     be used to avoid the issue.
         /// </param>
         /// <param name="link"> An optional link or ID containing more details about the issue. </param>
         public KnownIssueAttribute(
