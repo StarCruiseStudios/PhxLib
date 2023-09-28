@@ -19,7 +19,7 @@ namespace Phx.Lang {
         [TestCase("some string", "some string")]
         [TestCase(EmptyString, EmptyString)]
         [TestCase(null, NullString)]
-        public void ToStringSafe(string inputString, string expectedOutput) {
+        public void ToStringSafe(string? inputString, string expectedOutput) {
             var input = Given("An input string", () => inputString);
 
             var result = When("Converted using ToStringSafe", () => inputString.ToStringSafe());
