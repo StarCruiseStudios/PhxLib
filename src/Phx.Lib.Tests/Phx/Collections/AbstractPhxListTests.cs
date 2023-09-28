@@ -75,12 +75,12 @@ namespace Phx.Collections {
                     () => collection.IndexOfFirst(searchTerm));
 
             if (expectedIndex == -1) {
-                Then("The search failed", () => Verify.That(actual.IsFailure.IsTrue()));
+                Then("The search failed", () => Verify.That(actual.IsPresent.IsFalse()));
             } else {
-                Then("The search succeeded", () => Verify.That(actual.IsSuccess.IsTrue()));
+                Then("The search succeeded", () => Verify.That(actual.IsPresent.IsTrue()));
                 Then("The expected result is returned",
                         expectedIndex,
-                        (expected) => Verify.That(actual.OrThrow().IsEqualTo(expected)));
+                        (expected) => Verify.That(actual.Value.IsEqualTo(expected)));
             }
         }
 
@@ -106,12 +106,12 @@ namespace Phx.Collections {
                     () => collection.IndexOfNext(searchTerm, startIndex));
 
             if (expectedIndex == -1) {
-                Then("The search failed", () => Verify.That(actual.IsFailure.IsTrue()));
+                Then("The search failed", () => Verify.That(actual.IsPresent.IsFalse()));
             } else {
-                Then("The search succeeded", () => Verify.That(actual.IsSuccess.IsTrue()));
+                Then("The search succeeded", () => Verify.That(actual.IsPresent.IsTrue()));
                 Then("The expected result is returned",
                         expectedIndex,
-                        (expected) => Verify.That(actual.OrThrow().IsEqualTo(expected)));
+                        (expected) => Verify.That(actual.Value.IsEqualTo(expected)));
             }
         }
 
@@ -148,12 +148,12 @@ namespace Phx.Collections {
                     () => collection.IndexOfLast(searchTerm));
 
             if (expectedIndex == -1) {
-                Then("The search failed", () => Verify.That(actual.IsFailure.IsTrue()));
+                Then("The search failed", () => Verify.That(actual.IsPresent.IsFalse()));
             } else {
-                Then("The search succeeded", () => Verify.That(actual.IsSuccess.IsTrue()));
+                Then("The search succeeded", () => Verify.That(actual.IsPresent.IsTrue()));
                 Then("The expected result is returned",
                         expectedIndex,
-                        (expected) => Verify.That(actual.OrThrow().IsEqualTo(expected)));
+                        (expected) => Verify.That(actual.Value.IsEqualTo(expected)));
             }
         }
     }

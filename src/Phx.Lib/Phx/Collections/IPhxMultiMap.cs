@@ -58,11 +58,8 @@ namespace Phx.Collections {
 
         /// <summary> Gets the collection of elements associated with the specified key. </summary>
         /// <param name="key"> The key. </param>
-        /// <returns>
-        ///     A success result containing the collection of values associated with the key if found, or
-        ///     a failure result if the key is not found.
-        /// </returns>
-        public IResult<IPhxCollection<TValue>, Unit> Get(TKey key);
+        /// <returns> An optional containing the collection of values associated with the key if found. </returns>
+        public IOptional<IPhxCollection<TValue>> Get(TKey key);
     }
 
     /// <summary>
@@ -131,7 +128,7 @@ namespace Phx.Collections {
         /// <returns> A <typeparamref name="TValue" /> instance retrieved from the map. </returns>
         /// <exception cref="InvalidOperationException"> Thrown if the key is not found in the map. </exception>
         public static IPhxCollection<TValue> GetOrThrow<TKey, TValue>(this IPhxMultiMap<TKey, TValue> map, TKey key) {
-            return map.Get(key).OrThrow();
+            return map.Get(key).OrThrow(() => new InvalidOperationException($"Key {key} not found in map."));
         }
 
         /// <summary>

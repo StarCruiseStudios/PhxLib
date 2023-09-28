@@ -6,8 +6,6 @@
 //  </copyright>
 // -----------------------------------------------------------------------------
 
-using static Phx.Lang.Unit;
-
 namespace Phx.Collections {
     using System.Collections.Generic;
     using NSubstitute;
@@ -27,7 +25,7 @@ namespace Phx.Collections {
             var key = Given("A key", () => "key");
             var value = Given("A value", () => "value");
             _ = Given("The map contains the value for the key",
-                    () => collection.Get(Arg.Is(key)).Returns(Result.Success<string, Unit>(value)));
+                    () => collection.Get(Arg.Is(key)).Returns(Optional<string>.Of(value)));
 
             var actual = Given("GetOrDefault is invoked for the key", () => collection.GetOrElse(key, () => "DEFAULT"));
 
@@ -43,7 +41,7 @@ namespace Phx.Collections {
             var key = Given("A key", () => "key");
             var defaultValue = Given("A default value", () => "DEFAULT");
             _ = Given("The map does not contain a value for the key",
-                    () => collection.Get(Arg.Is(key)).Returns(Result.Failure<string, Unit>(UNIT)));
+                    () => collection.Get(Arg.Is(key)).Returns(Optional<string>.EMPTY));
 
             var actual = Given("GetOrDefault is invoked for the key",
                     () => collection.GetOrElse(key, () => defaultValue));
@@ -60,7 +58,7 @@ namespace Phx.Collections {
             var key = Given("A key", () => "key");
             var value = Given("A value", () => "value");
             _ = Given("The map contains the value for the key",
-                    () => collection.Get(Arg.Is(key)).Returns(Result.Success<string, Unit>(value)));
+                    () => collection.Get(Arg.Is(key)).Returns(Optional<string>.Of(value)));
 
             var actual = Given("GetOrElse is invoked for the key", () => collection.GetOrElse(key, () => "DEFAULT"));
 
@@ -76,7 +74,7 @@ namespace Phx.Collections {
             var key = Given("A key", () => "key");
             var defaultValue = Given("A default value", () => "DEFAULT");
             _ = Given("The map does not contain a value for the key",
-                    () => collection.Get(Arg.Is(key)).Returns(Result.Failure<string, Unit>(UNIT)));
+                    () => collection.Get(Arg.Is(key)).Returns(Optional<string>.EMPTY));
 
             var actual = Given("GetOrElse is invoked for the key", () => collection.GetOrElse(key, () => defaultValue));
 
@@ -92,7 +90,7 @@ namespace Phx.Collections {
             var key = Given("A key", () => "key");
             var value = Given("A value", () => "value");
             _ = Given("The map contains the value for the key",
-                    () => collection.Get(Arg.Is(key)).Returns(Result.Success<string, Unit>(value)));
+                    () => collection.Get(Arg.Is(key)).Returns(Optional<string>.Of(value)));
 
             var actual = Given("GetValue is invoked for the key", () => collection.GetOrThrow(key));
 
@@ -107,7 +105,7 @@ namespace Phx.Collections {
                     () => Substitute.For<IPhxMap<string, string>>());
             var key = Given("A key", () => "key");
             _ = Given("The map does not contain a value for the key",
-                    () => collection.Get(Arg.Is(key)).Returns(Result.Failure<string, Unit>(UNIT)));
+                    () => collection.Get(Arg.Is(key)).Returns(Optional<string>.EMPTY));
 
             var action = DeferredWhen("GetValue is invoked for the key",
                     () => collection.GetOrThrow(key));

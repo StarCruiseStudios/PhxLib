@@ -93,12 +93,8 @@ namespace Phx.Collections {
         }
 
         /// <inheritdoc />
-        public IResult<TValue, Unit> Get(TKey key) {
-            if (internalMap.TryGetValue(key, out var val)) {
-                return Result.Success<TValue, Unit>(val);
-            }
-
-            return Result.Failure<TValue, Unit>(Unit.UNIT);
+        public IOptional<TValue> Get(TKey key) {
+            return Optional<TValue>.If(internalMap.TryGetValue(key, out var val), val);
         }
 
         /// <inheritdoc />

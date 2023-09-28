@@ -29,10 +29,10 @@ namespace Phx.Collections {
 
             var actual2 = When($"A value is retrieved using Get() {key}", () => collection.Get(key));
 
-            Then("The value was found", () => Verify.That(actual2.IsSuccess.IsTrue()));
+            Then("The value was found", () => Verify.That(actual2.IsPresent.IsTrue()));
             Then("The result is the same",
                     actual,
-                    (expected) => Verify.That(actual2.OrThrow().IsEqualTo(expected)));
+                    (expected) => Verify.That(actual2.Value.IsEqualTo(expected)));
         }
 
         [Test]

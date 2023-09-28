@@ -75,7 +75,8 @@ namespace Phx.Lang {
             var value = Given("An optional value", () => TEST_VALUE);
             var optional = Given("The value is wrapped in an optional", () => Optional<string>.OfNullable(value));
 
-            var actual = When("The value is mapped", () => optional.Map((_) => Optional<string>.Of(ALT_TEST_VALUE)));
+            var actual = When("The value is mapped",
+                    () => optional.Map<string, string>((_) => Optional<string>.Of(ALT_TEST_VALUE)));
 
             Then("The mapped value is present", () => Verify.That(actual.IsPresent.IsTrue()));
             Then("The value is mapped", ALT_TEST_VALUE, (expected) => Verify.That(actual.Value.IsEqualTo(expected)));
@@ -124,7 +125,7 @@ namespace Phx.Lang {
             var value = Given("An optional value", () => TEST_VALUE);
             var optional = Given("The value is wrapped in an optional", () => Optional<string>.OfNullable(value));
 
-            var actual = When("OrElseThrow is invoked", () => optional.OrElseThrow(() => new TestException()));
+            var actual = When("OrElseThrow is invoked", () => optional.OrThrow(() => new TestException()));
 
             Then("The expected value is returned", TEST_VALUE, (expected) => Verify.That(actual.IsEqualTo(expected)));
         }
@@ -134,7 +135,7 @@ namespace Phx.Lang {
             var optional = Given("An empty optional value", () => Optional<string>.EMPTY);
 
             var action = When("OrElseThrow is invoked",
-                    () => (Action)(() => optional.OrElseThrow(() => new TestException())));
+                    () => (Action)(() => optional.OrThrow(() => new TestException())));
 
             _ = Then("A TestException is thrown",
                     () => TestUtils.TestForError<TestException>(action));

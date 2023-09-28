@@ -130,65 +130,53 @@ namespace Phx.Collections {
         }
 
         /// <inheritdoc />
-        public IResult<int, Unit> IndexOfFirst(object item) {
+        public IOptional<int> IndexOfFirst(object item) {
             if (item is not T i) {
-                return Result.Failure<int, Unit>(Unit.UNIT);
+                return Optional<int>.EMPTY;
             }
 
             var index = internalList.IndexOf(i);
-            return index < 0
-                    ? Result.Failure<int, Unit>(Unit.UNIT)
-                    : Result.Success<int, Unit>(index);
+            return Optional<int>.If(index >= 0, index);
         }
 
         /// <inheritdoc />
-        public IResult<int, Unit> IndexOfFirst(Predicate<T> predicate) {
+        public IOptional<int> IndexOfFirst(Predicate<T> predicate) {
             var index = internalList.FindIndex(predicate);
-            return index < 0
-                    ? Result.Failure<int, Unit>(Unit.UNIT)
-                    : Result.Success<int, Unit>(index);
+            return Optional<int>.If(index >= 0, index);
         }
 
         /// <inheritdoc />
-        public IResult<int, Unit> IndexOfLast(object item) {
+        public IOptional<int> IndexOfLast(object item) {
             if (item is not T i) {
-                return Result.Failure<int, Unit>(Unit.UNIT);
+                return Optional<int>.EMPTY;
             }
 
             var index = internalList.LastIndexOf(i);
-            return index < 0
-                    ? Result.Failure<int, Unit>(Unit.UNIT)
-                    : Result.Success<int, Unit>(index);
+            return Optional<int>.If(index >= 0, index);
         }
 
         /// <inheritdoc />
-        public IResult<int, Unit> IndexOfLast(Predicate<T> predicate) {
+        public IOptional<int> IndexOfLast(Predicate<T> predicate) {
             var index = internalList.FindLastIndex(predicate);
-            return index < 0
-                    ? Result.Failure<int, Unit>(Unit.UNIT)
-                    : Result.Success<int, Unit>(index);
+            return Optional<int>.If(index >= 0, index);
         }
 
         /// <inheritdoc />
-        public IResult<int, Unit> IndexOfNext(object item, int startingIndex) {
+        public IOptional<int> IndexOfNext(object item, int startingIndex) {
             this.RequireIndexInBounds(startingIndex);
             if (item is not T i) {
-                return Result.Failure<int, Unit>(Unit.UNIT);
+                return Optional<int>.EMPTY;
             }
 
             var index = internalList.IndexOf(i, startingIndex);
-            return index < 0
-                    ? Result.Failure<int, Unit>(Unit.UNIT)
-                    : Result.Success<int, Unit>(index);
+            return Optional<int>.If(index >= 0, index);
         }
 
         /// <inheritdoc />
-        public IResult<int, Unit> IndexOfNext(Predicate<T> predicate, int startingIndex) {
+        public IOptional<int> IndexOfNext(Predicate<T> predicate, int startingIndex) {
             this.RequireIndexInBounds(startingIndex);
             var index = internalList.FindIndex(startingIndex, predicate);
-            return index < 0
-                    ? Result.Failure<int, Unit>(Unit.UNIT)
-                    : Result.Success<int, Unit>(index);
+            return Optional<int>.If(index >= 0, index);
         }
 
         /// <inheritdoc />

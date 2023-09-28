@@ -88,13 +88,13 @@ namespace Phx.Collections {
         }
 
         /// <inheritdoc />
-        public IResult<IPhxCollection<TValue>, Unit> Get(TKey key) {
-            return internalMap.Get(key).Map<IPhxCollection<TValue>>(val => val);
+        public IOptional<IPhxCollection<TValue>> Get(TKey key) {
+            return internalMap.Get(key);
         }
 
         /// <inheritdoc />
-        IResult<IPhxMutableCollection<TValue>, Unit> IPhxMutableMultiMap<TKey, TValue>.Get(TKey key) {
-            return internalMap.Get(key).Map<IPhxMutableCollection<TValue>>(val => val);
+        IOptional<IPhxMutableCollection<TValue>> IPhxMutableMultiMap<TKey, TValue>.Get(TKey key) {
+            return internalMap.Get(key);
         }
 
         /// <inheritdoc />

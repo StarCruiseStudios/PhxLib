@@ -21,7 +21,7 @@ namespace Phx.Collections {
     public sealed class PhxHashMap<TKey, TValue> : IPhxMutableMap<TKey, TValue>, IDebugDisplay {
         private readonly IDictionary<TKey, TValue> internalMap;
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IPhxMutableMap{TKey,TValue}.this" />
         public TValue this[TKey key] {
             get => this.GetOrThrow(key);
             set => Set(key, value);
@@ -49,8 +49,10 @@ namespace Phx.Collections {
         /// <summary> Initializes a new instance of the <see cref="PhxHashMap{TKey, TValue}" /> class. </summary>
         /// <param name="elements"> The elements to initialize the collection with. </param>
         public PhxHashMap(IEnumerable<IPhxKeyValuePair<TKey, TValue>> elements) {
-            internalMap = new Dictionary<TKey, TValue>(elements.Count());
-            foreach (var element in elements) {
+            IEnumerable<IPhxKeyValuePair<TKey, TValue>> phxKeyValuePairs =
+                    elements as IPhxKeyValuePair<TKey, TValue>[] ?? elements.ToArray();
+            internalMap = new Dictionary<TKey, TValue>(phxKeyValuePairs.Count());
+            foreach (var element in phxKeyValuePairs) {
                 internalMap.Add(element.Key, element.Value);
             }
         }
@@ -100,12 +102,8 @@ namespace Phx.Collections {
         }
 
         /// <inheritdoc />
-        public IResult<TValue, Unit> Get(TKey key) {
-            if (internalMap.TryGetValue(key, out var val)) {
-                return Result.Success<TValue, Unit>(val);
-            }
-
-            return Result.Failure<TValue, Unit>(Unit.UNIT);
+        public IOptional<TValue> Get(TKey key) {
+            return Optional<TValue>.If(internalMap.TryGetValue(key, out var val), val);
         }
 
         /// <inheritdoc />
@@ -126,35 +124,11 @@ namespace Phx.Collections {
         }
 
         /// <inheritdoc />
-        public int RemoveValues(Predicate<TValue> predicate) {
-            var keysToRemove = MutableSetOf<TKey>();
-            foreach (var entry in internalMap) {
-                if (predicate(entry.Value)) {
-                    _ = keysToRemove.Add(entry.Key);
-                }
-            }
-
-            return RemoveAll(keysToRemove);
-        }
-
-        /// <inheritdoc />
         public int RetainOnly(IEnumerable<TKey> keys) {
             var keysToRemove = MutableSetOf<TKey>();
             IEnumerable<TKey> enumerable = keys as TKey[] ?? keys.ToArray();
             foreach (var entry in internalMap) {
                 if (!enumerable.Contains(entry.Key)) {
-                    _ = keysToRemove.Add(entry.Key);
-                }
-            }
-
-            return RemoveAll(keysToRemove);
-        }
-
-        /// <inheritdoc />
-        public int RetainValues(Predicate<TValue> predicate) {
-            var keysToRemove = MutableSetOf<TKey>();
-            foreach (var entry in internalMap) {
-                if (!predicate(entry.Value)) {
                     _ = keysToRemove.Add(entry.Key);
                 }
             }

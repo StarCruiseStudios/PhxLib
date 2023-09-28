@@ -34,18 +34,18 @@ namespace Phx.Collections {
         /// <summary> Gets the index of the first occurrence of the specified item. </summary>
         /// <param name="item"> The item to search for. </param>
         /// <returns>
-        ///     A success result containing the index of the first occurrence of the specified item, or a
-        ///     failure result if the item is not found.
+        ///     An optional value containing the index of the first occurrence of the specified item if
+        ///     the item is found.
         /// </returns>
-        public IResult<int, Unit> IndexOfFirst(object item);
+        public IOptional<int> IndexOfFirst(object item);
 
         /// <summary> Gets the index of the first occurrence of the specified item. </summary>
         /// <param name="predicate"> The predicate that returns <c> true </c> when a desired item is provided. </param>
         /// <returns>
-        ///     A success result containing the index of the first occurrence of the specified item, or a
-        ///     failure result if the item is not found.
+        ///     An optional value containing the index of the first occurrence of the specified item if
+        ///     the item is found.
         /// </returns>
-        public IResult<int, Unit> IndexOfFirst(Predicate<T> predicate);
+        public IOptional<int> IndexOfFirst(Predicate<T> predicate);
 
         /// <summary> Gets the index of the next occurrence of the specified item starting at the given index. </summary>
         /// <remarks>
@@ -56,15 +56,14 @@ namespace Phx.Collections {
         /// <param name="item"> The item to search for. </param>
         /// <param name="startingIndex"> The index to begin searching from. </param>
         /// <returns>
-        ///     A success result containing the index of the first occurrence of the specified item
-        ///     starting from, the given index, or a failure result if the item is not found after the start
-        ///     index.
+        ///     An optional value containing the index of the first occurrence of the specified item if
+        ///     the item is found.
         /// </returns>
         /// <exception cref="IndexOutOfRangeException">
         ///     thrown when the given index is negative or greater than
         ///     or equal to the <see cref="IPhxList{T}" />'s size.
         /// </exception>
-        public IResult<int, Unit> IndexOfNext(object item, int startingIndex);
+        public IOptional<int> IndexOfNext(object item, int startingIndex);
 
         /// <summary> Gets the index of the next occurrence of the specified item starting at the given index. </summary>
         /// <remarks>
@@ -75,31 +74,30 @@ namespace Phx.Collections {
         /// <param name="predicate"> The predicate that returns <c> true </c> when a desired item is provided. </param>
         /// <param name="startingIndex"> The index to begin searching from. </param>
         /// <returns>
-        ///     A success result containing the index of the first occurrence of the specified item
-        ///     starting from, the given index, or a failure result if the item is not found after the start
-        ///     index.
+        ///     An optional value containing the index of the first occurrence of the specified item if
+        ///     the item is found.
         /// </returns>
         /// <exception cref="IndexOutOfRangeException">
         ///     thrown when the given index is negative or greater than
         ///     or equal to the <see cref="IPhxList{T}" />'s size.
         /// </exception>
-        public IResult<int, Unit> IndexOfNext(Predicate<T> predicate, int startingIndex);
+        public IOptional<int> IndexOfNext(Predicate<T> predicate, int startingIndex);
 
         /// <summary> Gets the index of the last occurrence of the specified item. </summary>
         /// <param name="item"> The item to search for. </param>
         /// <returns>
-        ///     A success result containing the index of the last occurrence of the specified item, or a
-        ///     failure result if the item is not found.
+        ///     An optional value containing the index of the first occurrence of the specified item if
+        ///     the item is found.
         /// </returns>
-        public IResult<int, Unit> IndexOfLast(object item);
+        public IOptional<int> IndexOfLast(object item);
 
         /// <summary> Gets the index of the last occurrence of the specified item. </summary>
         /// <param name="predicate"> The predicate that returns <c> true </c> when a desired item is provided. </param>
         /// <returns>
-        ///     A success result containing the index of the last occurrence of the specified item, or a
-        ///     failure result if the item is not found.
+        ///     An optional value containing the index of the first occurrence of the specified item if
+        ///     the item is found.
         /// </returns>
-        public IResult<int, Unit> IndexOfLast(Predicate<T> predicate);
+        public IOptional<int> IndexOfLast(Predicate<T> predicate);
     }
 
     /// <summary> Contains extension methods applied to all implementations of <see cref="IPhxList{T}" />. </summary>

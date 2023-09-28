@@ -39,11 +39,8 @@ namespace Phx.Collections {
 
         /// <summary> Gets the collection of elements associated with the specified key. </summary>
         /// <param name="key"> The key. </param>
-        /// <returns>
-        ///     A success result containing the collection of values associated with the key if found, or
-        ///     a failure result if the key is not found.
-        /// </returns>
-        public new IResult<IPhxMutableCollection<TValue>, Unit> Get(TKey key);
+        /// <returns> An optional containing the collection of values associated with the key if found. </returns>
+        public new IOptional<IPhxMutableCollection<TValue>> Get(TKey key);
 
         /// <summary> Adds the value to the collection of values associated with the specified key. </summary>
         /// <param name="key"> The key. </param>
@@ -144,7 +141,7 @@ namespace Phx.Collections {
         public static IPhxMutableCollection<TValue> GetOrThrow<TKey, TValue>(
                 this IPhxMutableMultiMap<TKey, TValue> map,
                 TKey key) {
-            return map.Get(key).OrThrow();
+            return map.Get(key).OrThrow(() => new InvalidOperationException($"Key {key} not found in map."));
         }
 
         /// <summary> Adds the values associated with each of the specified keys. </summary>
