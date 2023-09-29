@@ -12,12 +12,14 @@ namespace Phx.Collections {
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Text;
     using Phx.Debug;
 
     /// <summary> An immutable collection that contains an unordered set of unique items. </summary>
     /// <typeparam name="T"> The type of item contained in the set. </typeparam>
+    [DebuggerDisplay(DebugDisplay.DEBUGGER_DISPLAY_STRING)]
     public sealed class ImmutablePhxSet<T> : IPhxSet<T>, IDebugDisplay {
         private readonly HashSet<T> internalSet;
 

@@ -14,6 +14,7 @@ namespace Phx.Collections {
     using Phx.Test;
     using Phx.Validation;
 
+    [TestFixture]
     public static class PhxHashMapTests {
         private static T ConstructTestInstance<T>(
                 IEnumerable<(string, string)> elements

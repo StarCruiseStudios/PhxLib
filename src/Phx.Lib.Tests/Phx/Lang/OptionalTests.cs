@@ -23,7 +23,7 @@ namespace Phx.Lang {
         [TestCase(null, false)]
         public void IsPresentWhenPresent(string? value, bool isPresent) {
             _ = Given("An optional value", () => value);
-            var actual = When("The value is wrapped in an optional", () => Optional<string>.OfNullable(value));
+            var actual = When("The value is wrapped in an optional", () => Optional.OfNullable(value));
             Then("The optional is present if expected",
                     isPresent,
                     (expected) => Verify.That(actual.IsPresent.IsEqualTo(expected)));
@@ -35,7 +35,7 @@ namespace Phx.Lang {
         [Test]
         public void ValueIsReturnedWhenPresent() {
             var value = Given("An optional value", () => TEST_VALUE);
-            var optional = Given("The value is wrapped in an optional", () => Optional<string>.OfNullable(value));
+            var optional = Given("The value is wrapped in an optional", () => Optional.OfNullable(value));
 
             var actual = When("The value is retrieved from the optional", () => optional.Value);
 
@@ -56,7 +56,7 @@ namespace Phx.Lang {
         [TestCase(null, false)]
         public void IfPresentExcecutesActionWhenPresent(string? value, bool isPresent) {
             _ = Given("An optional value", () => value);
-            var optional = Given("The value is wrapped in an optional", () => Optional<string>.OfNullable(value));
+            var optional = Given("The value is wrapped in an optional", () => Optional.OfNullable(value));
             bool ifPresentWasExecuted = false;
             When("IfPresent is invoked", () => optional.IfPresent((_) => ifPresentWasExecuted = true));
             Then("The action was executed if expected",
@@ -73,10 +73,10 @@ namespace Phx.Lang {
         [Test]
         public void MappedValueIsMappedWhenPresent() {
             var value = Given("An optional value", () => TEST_VALUE);
-            var optional = Given("The value is wrapped in an optional", () => Optional<string>.OfNullable(value));
+            var optional = Given("The value is wrapped in an optional", () => Optional.OfNullable(value));
 
             var actual = When("The value is mapped",
-                    () => optional.Map<string, string>((_) => Optional<string>.Of(ALT_TEST_VALUE)));
+                    () => optional.Map<string, string>((_) => Optional.Of(ALT_TEST_VALUE)));
 
             Then("The mapped value is present", () => Verify.That(actual.IsPresent.IsTrue()));
             Then("The value is mapped", ALT_TEST_VALUE, (expected) => Verify.That(actual.Value.IsEqualTo(expected)));
@@ -86,7 +86,7 @@ namespace Phx.Lang {
         public void MappedValueIsMappedWhenNotPresent() {
             var optional = Given("An empty optional value", () => Optional<string>.EMPTY);
 
-            var actual = When("The value is mapped", () => optional.Map((_) => Optional<string>.Of(ALT_TEST_VALUE)));
+            var actual = When("The value is mapped", () => optional.Map((_) => Optional.Of(ALT_TEST_VALUE)));
 
             Then("The mapped value is not present", () => Verify.That(actual.IsPresent.IsFalse()));
         }
@@ -95,7 +95,7 @@ namespace Phx.Lang {
         [TestCase(null, false)]
         public void OrElseProvidesValueWhenEmpty(string? value, bool isPresent) {
             _ = Given("An optional value", () => value);
-            var optional = Given("The value is wrapped in an optional", () => Optional<string>.OfNullable(value));
+            var optional = Given("The value is wrapped in an optional", () => Optional.OfNullable(value));
 
             var actual = When("OrElse is invoked", () => optional.OrElse(() => ALT_TEST_VALUE));
             Then("The expected value is returned",
@@ -109,9 +109,9 @@ namespace Phx.Lang {
         [TestCase(null, false)]
         public void OrTryProvidesValueWhenEmpty(string? value, bool isPresent) {
             _ = Given("An optional value", () => value);
-            var optional = Given("The value is wrapped in an optional", () => Optional<string>.OfNullable(value));
+            var optional = Given("The value is wrapped in an optional", () => Optional.OfNullable(value));
 
-            var actual = When("OrTry is invoked", () => optional.OrTry(() => Optional<string>.Of(ALT_TEST_VALUE)));
+            var actual = When("OrTry is invoked", () => optional.OrTry(() => Optional.Of(ALT_TEST_VALUE)));
             Then("The resultant optional value is present", () => Verify.That(actual.IsPresent.IsTrue()));
             Then("The expected value is returned",
                     isPresent
@@ -123,7 +123,7 @@ namespace Phx.Lang {
         [Test]
         public void OrElseThrowProvidesValueWhenPresent() {
             var value = Given("An optional value", () => TEST_VALUE);
-            var optional = Given("The value is wrapped in an optional", () => Optional<string>.OfNullable(value));
+            var optional = Given("The value is wrapped in an optional", () => Optional.OfNullable(value));
 
             var actual = When("OrElseThrow is invoked", () => optional.OrThrow(() => new TestException()));
 

@@ -25,7 +25,7 @@ namespace Phx.Collections {
             var key = Given("A key", () => "key");
             var value = Given("A value", () => "value");
             _ = Given("The map contains the value for the key",
-                    () => collection.Get(Arg.Is(key)).Returns(Optional<string>.Of(value)));
+                    () => collection.Get(Arg.Is(key)).Returns(Optional.Of(value)));
 
             var actual = Given("GetOrInsert is invoked for the key", () => collection.GetOrInsert(key, "DEFAULT"));
 
@@ -59,7 +59,7 @@ namespace Phx.Collections {
             var key = Given("A key", () => "key");
             var value = Given("A value", () => "value");
             _ = Given("The map contains the value for the key",
-                    () => collection.Get(Arg.Is(key)).Returns(Optional<string>.Of(value)));
+                    () => collection.Get(Arg.Is(key)).Returns(Optional.Of(value)));
 
             var actual = Given("GetOrInsert is invoked for the key",
                     () => collection.GetOrInsert(key, () => "DEFAULT"));

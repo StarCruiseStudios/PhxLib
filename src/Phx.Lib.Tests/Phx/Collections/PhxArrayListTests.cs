@@ -11,6 +11,7 @@ namespace Phx.Collections {
     using System.Collections.Generic;
     using NUnit.Framework;
 
+    [TestFixture]
     public static class PhxArrayListTests {
         private static T ConstructTestInstance<T, U>(IEnumerable<U> elements) where T : IPhxContainer<U> {
             var list = new PhxArrayList<U>(elements);

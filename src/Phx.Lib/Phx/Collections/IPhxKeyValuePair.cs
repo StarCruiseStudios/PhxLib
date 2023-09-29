@@ -8,8 +8,8 @@
 
 namespace Phx.Collections {
     /// <summary> Represents a readonly key value pair. </summary>
-    /// <typeparam name="TKey"> The key. </typeparam>
-    /// <typeparam name="TValue"> The value. </typeparam>
+    /// <typeparam name="TKey"> The type of the key. </typeparam>
+    /// <typeparam name="TValue"> The type of the value. </typeparam>
     public interface IPhxKeyValuePair<out TKey, out TValue> {
         /// <summary> Gets the key. </summary>
         public TKey Key { get; }

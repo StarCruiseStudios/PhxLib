@@ -10,6 +10,7 @@ namespace Phx.Collections {
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Text;
     using Phx.Debug;
@@ -17,6 +18,7 @@ namespace Phx.Collections {
 
     /// <summary> A mutable collection that contains an ordered list of items. </summary>
     /// <typeparam name="T"> The type of item contained in the set. </typeparam>
+    [DebuggerDisplay(DebugDisplay.DEBUGGER_DISPLAY_STRING)]
     public sealed class PhxArrayList<T> : IPhxMutableList<T>, IDebugDisplay {
         private readonly List<T> internalList;
 
@@ -136,13 +138,13 @@ namespace Phx.Collections {
             }
 
             var index = internalList.IndexOf(i);
-            return Optional<int>.If(index >= 0, index);
+            return Optional.If(index >= 0, index);
         }
 
         /// <inheritdoc />
         public IOptional<int> IndexOfFirst(Predicate<T> predicate) {
             var index = internalList.FindIndex(predicate);
-            return Optional<int>.If(index >= 0, index);
+            return Optional.If(index >= 0, index);
         }
 
         /// <inheritdoc />
@@ -152,13 +154,13 @@ namespace Phx.Collections {
             }
 
             var index = internalList.LastIndexOf(i);
-            return Optional<int>.If(index >= 0, index);
+            return Optional.If(index >= 0, index);
         }
 
         /// <inheritdoc />
         public IOptional<int> IndexOfLast(Predicate<T> predicate) {
             var index = internalList.FindLastIndex(predicate);
-            return Optional<int>.If(index >= 0, index);
+            return Optional.If(index >= 0, index);
         }
 
         /// <inheritdoc />
@@ -169,14 +171,14 @@ namespace Phx.Collections {
             }
 
             var index = internalList.IndexOf(i, startingIndex);
-            return Optional<int>.If(index >= 0, index);
+            return Optional.If(index >= 0, index);
         }
 
         /// <inheritdoc />
         public IOptional<int> IndexOfNext(Predicate<T> predicate, int startingIndex) {
             this.RequireIndexInBounds(startingIndex);
             var index = internalList.FindIndex(startingIndex, predicate);
-            return Optional<int>.If(index >= 0, index);
+            return Optional.If(index >= 0, index);
         }
 
         /// <inheritdoc />

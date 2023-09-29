@@ -8,15 +8,20 @@ Utilities that assist in the debugging of code.
 Provides an interface for a different string representation of an object intended for debugging rather than user display.
 ```csharp
 using System.Diagnostics;
+using Phx.Debug;
 
 // System.Diagnostics.DebuggerDisplay attribute controls what is displayed in
 // the IDEs debugger view.
-[DebuggerDisplay(IDebugDisplay.DEBUGGER_DISPLAY_STRING)]
+[DebuggerDisplay(DebugDisplay.DEBUGGER_DISPLAY_STRING)]
 public class MyClass : IDebugDisplay {
-
     // ToDebugDisplay() method is also available to invoke in debug logging.
     public string ToDebugDisplay() {
         return "MyClass";
+    }
+    
+    public override string ToString() {
+        // Or provide a default implementation that is intended for user display.
+        return ToDebugDisplay();
     }
 }
 ```
@@ -30,8 +35,21 @@ with that describe the reason the code path is invalid. This is similar to throw
 `NotImplementedException` or `InvalidOperationException` directly, except it 
 "returns" a value to work better with assignment statements and argument passing.
 ```csharp
-var myClass = new MyClass(ToDo.NotImplementedYet("This parameter need to be computed."));
-MyClass item = ToDo.NotSupportedYet("We havent figured out how to handle this case.");
+using Phx.Dev;
+                
+var myList = new List<string> {
+    ToDo.NotImplementedYet<string>("This parameter need to be computed.")
+};
+
+int i = Random.Shared.Next();
+switch (i) {
+    case 0:
+        ToDo.NotImplementedYet("This case needs to be handled.");
+        break;
+    default:
+        ToDo.NotSupportedYet("We haven't figured out how to handle this yet.");
+        break;
+}
 ```
 
 ### ToDo Attributes
@@ -40,6 +58,8 @@ to be resolved but that do not prevent execution. These attributes are similar
 to using comments except they are more easily searched and the compiler helps
 avoid typos and enforce the presence of descriptions.
 ```csharp
+using Phx.Dev;
+
 [KnownIssue("This class doesn't work all the time.",
     workaround: "Use the NotBroken class instead.",
     link: "www.todo/12345")]
@@ -62,6 +82,8 @@ Extends the `IDisposable` interface with a publicly readable boolean property
 that indicates if the instance has been disposed.
 
 ```csharp
+using Phx.Lang;
+
 public class MyResource: ICheckedDisposable {
     public bool IsDisposed { get; private set; }
 
@@ -71,7 +93,7 @@ public class MyResource: ICheckedDisposable {
     }
     
     protected virtual void Dispose(bool disposing) {
-        if(!this.IsDisposed) {
+        if(!IsDisposed) {
             if(disposing) {
                 // Dispose managed resources.
             }
@@ -96,6 +118,8 @@ This is equivalent to using `null!`, but is more clear about the developer's
 intentions.
 
 ```csharp
+using Phx.Lang;
+
 string str = Late.Init<string>();
 ```
 
@@ -105,29 +129,40 @@ caller that a value may not be returned. It enforces that that case is handled,
 and provides built in helper methods to handle it.
 
 ```csharp
-private Optional<string> GetNickName() {
-    return Optional.OfNullable(this.nickName);
+using Phx.Lang;
+
+private IOptional<string> GetNickName() {
+    return Optional.OfNullable(nickName);
 }
 
 private void UseAnOptional() {
-    var nickName = GetNickName().OrElse(StringUtils.EmptyString);
+    var nickName = GetNickName().OrElse(() => StringUtils.EmptyString);
 }
 ```
 Helper methods include:
 ```csharp
+using Phx.Lang;
+                
 // Create an Optional from a value that may be null.
 string? nickName = ReadNickName();
-Optional<string> optionalNickName = Optional.OfNullable(nickName);
+IOptional<string> optionalNickName = Optional.OfNullable(nickName);
 
 // Use Optional.Of() or Optional.EMPTY to explicitly create an optional if it is
 // not possible to use Optional.OfNullable().
-bool valueIsSet = false;
-int value = -1;
-Optional<int> optional = valueIsSet 
-    ? Optional.Of(value)
-    : Optional<int>.EMPTY;
+IOptional<string> result;
+try {
+    var value = ReadValue();
+    result = Optional.Of(value);
+} catch (Exception) {
+    result = Optional<string>.EMPTY;
+}
+
+// Use Optional.If() to create an optional from a boolean condition.
+IOptional<int> optional = Optional.If(valueIsSet(), 10);
 ```
 ```csharp
+using Phx.Lang;
+
 // Perform custom logic based on whether the optional is present
 if (optional.IsPresent) {
     // Always check `IsPresent` first as `Value` will throw an exception if the 
@@ -140,21 +175,27 @@ if (optional.IsEmpty) {
 }
 ```
 ```csharp
-// Functional methods to handle the presence or absence of an optional value.
-optional.IfPresent(myValue => { ... });
-optional.IfEmpty(() => { ... });
-```
-```csharp
-// Operate on or transform an optional value only if it is present.
-Optional<string> optStr = optional.Map(intValue => int.ToString());
-```
-```csharp
-// Get default values or try alternatives if an optional is not present.
-var newValue = optional.OrElse(() => 100);
+using Phx.Lang;
 
-var newValue = optional.OrTry(() => AnotherMethodThatReturnsOptional())
-    .OrTry(() => ADifferentMethodThatReturnsOptional())
-    .OrElseThrow(() => new InvalidOperationException("None of the optional values were present."));
+// Functional methods to handle the presence or absence of an optional value.
+optional.IfPresent(myValue => { /* ... */ });
+optional.IfEmpty(() => { /* ... */ });
+```
+```csharp
+using Phx.Lang;
+
+// Operate on or transform an optional value only if it is present.
+IOptional<string> optStr = optional.Map<int, string>(intValue => Optional.Of(intValue.ToString()));
+```
+```csharp
+using Phx.Lang;
+
+// Get default values or try alternatives if an optional is not present.
+var v = optional.OrElse(() => 100);
+
+var v2 = optional.OrTry(() => AnotherMethodThatReturnsOptional())
+        .OrTry(() => ADifferentMethodThatReturnsOptional())
+        .OrThrow(() => new InvalidOperationException("None of the optional values were present."));
 ```
 
 ### Result
@@ -163,38 +204,48 @@ throwing exceptions. This enforces that the error cases are handled, and allows
 enumerations of the different error states.
 
 ```csharp
-private Result<string, DatabaseException> ReadDatabaseEntry() {
-    return Result.Success("Entry");
+using Phx.Lang;
+
+private IResult<string, DatabaseException> ReadDatabaseEntry() {
+    return Result.Success<string, DatabaseException>("Entry");
 }
 
 private void UseAResult() {
-    var entry = ReadDatabaseEntry().OrDefault("No Entry");
+    var entry = ReadDatabaseEntry().OrElse(() => "No Entry");
 }
 ```
 The following helper methods are provided:
 ```csharp
+using Phx.Lang;
+                
 // Create a result from a successful value or exception.
-return Result.Success(value);
-return Result.Failure(new Exception());
+Result.Success(10);
+Result.Failure(new Exception());
 ```
 ```csharp
+using Phx.Lang;
+
 // Check if the result is successful.
 var result = GetAValue();
 if (result.IsSuccess) {
-    var value = (result as Success).Result;
+    var value = (result as Success<string, Exception>)!.Result;
 }
 
 if (result.IsFailure) {
-    var error = (result as Failure).Error;
+    var error = (result as Failure<string, Exception>)!.Error;
 }
 ```
 ```csharp
-// Check the result for a specific outcome.
-if (result.Contains("Hello")) { ... }
+using Phx.Lang;
 
-if (result.ContainsError(new Exception()) { ... }
+// Check the result for a specific outcome.
+if (result.Contains(it => it == "Hello")) { /* ... */ }
+
+if (result.ContainsError(it => it is DatabaseException)) { /* ... */ }
 ```
 ```csharp
+using Phx.Lang;
+
 // Operate on or transform a result if it is successful.
 var stringResult = result.Map(value => value.ToString());
 
@@ -202,8 +253,9 @@ var stringResult = result.Map(value => value.ToString());
 var newResult = result.MapError(ex => new ParseException(ex));
 ```
 ```csharp
+using Phx.Lang;
+
 // Get default values or try alternatives if a result failed.
-var valueWithDefault = result.OrDefault("Default");
 var valueWithAlternative = result.OrElse(() => "Alternative");
 var requiredValue = result.OrThrow();
 ```
@@ -214,6 +266,8 @@ any exceptions were thrown, they are aggregated into a single
 `AggregateException` that is thrown after all actions have been executed. This
 is not an asynchronous operation, all actions are executed sequentially.
 ```csharp
+using Phx.Lang;
+
 try {
     Try.All(
         () => { DoFirstThing(); },
@@ -226,7 +280,7 @@ try {
     }
 }
 
-IEnumerable<int> elements = GetElements();
+IEnumerable<int> allElements = GetElements();
 
 try {
     Try.All((element) => { 
@@ -247,6 +301,9 @@ to pass around function references whose generic parameters require a return
 type.
 
 ```csharp
+using Phx.Lang;
+using static Phx.Lang.Unit;
+
 public Result<Unit, Exception> FunctionWithSideEffect() {
     if (PerformSomeSideEffect()) {
         return Result.Success(UNIT);
@@ -263,6 +320,9 @@ public Unit AssertFail() {
 ### String Utils and Extensions
 Various string utilities and extensions are also provided.
 ```csharp
+using Phx.Lang;
+using static Phx.Lang.StringUtils;
+
 // Constant string values.
 public void FunctionWithDefault(string str = EmptyString) {
     // String.Empty is a readonly field and cannot be used as a default argument
@@ -270,18 +330,22 @@ public void FunctionWithDefault(string str = EmptyString) {
     // those cases.
 }
 
-public string GetStringValue() {
+public string GetStringValue(string? value) {
     return value?.ToString() ?? NullString;
 }
 ```
 ```csharp
+using Phx.Lang;
+
 // Extension methods for converting objects to string.
 object? obj = null;
 string str = obj.ToStringSafe();
 
-troubleSomeObject.ToDebugDisplayString();
+troublesomeObject.ToDebugDisplayString();
 ```
 ```csharp
+using Phx.Lang;
+
 // Utilities for inline string building.
 var newName = BuildString(sb => {
     sb.Append("First");
@@ -289,6 +353,8 @@ var newName = BuildString(sb => {
 });
 ```
 ```csharp
+using Phx.Lang;
+
 // Extension methods for manipulating and escaping strings.
 var uppercase = "hello".StartUppercase();
 var lowercase = "Hello".StartLowercase();
@@ -301,6 +367,8 @@ var quoteString = "\"Hello\"".EscapeStringQuotes();
 var unescapedQuoteString = quoteString.UnescapeStringQuotes();
 ```
 ```csharp
+using Phx.Lang;
+
 // String case conversions
 var constantName = "someVariableName".FromCamelCase().ToCapsCase();
 

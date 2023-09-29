@@ -11,6 +11,7 @@ namespace Phx.Collections {
     using System.Collections.Generic;
     using NUnit.Framework;
 
+    [TestFixture]
     public static class PhxHashSetTests {
         private static T ConstructTestInstance<T, U>(IEnumerable<U> elements) where T : IPhxContainer<U> {
             var set = new PhxHashSet<U>(elements);

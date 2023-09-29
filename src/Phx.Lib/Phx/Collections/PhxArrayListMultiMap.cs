@@ -9,6 +9,7 @@
 namespace Phx.Collections {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Text;
     using Phx.Debug;
     using Phx.Lang;
@@ -16,6 +17,7 @@ namespace Phx.Collections {
     /// <summary> A mutable collection of mappings from a key to a list of one or more values. </summary>
     /// <typeparam name="TKey"> The type of object used as a key. </typeparam>
     /// <typeparam name="TValue"> The type of object used as a value. </typeparam>
+    [DebuggerDisplay(DebugDisplay.DEBUGGER_DISPLAY_STRING)]
     public sealed class PhxArrayListMultiMap<TKey, TValue> : IPhxMutableMultiMap<TKey, TValue>, IDebugDisplay {
         private readonly IPhxMutableMap<TKey, IPhxMutableList<TValue>> internalMap;
 

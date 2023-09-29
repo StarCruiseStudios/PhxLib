@@ -32,7 +32,7 @@ namespace Phx.Lang {
             }
         }
 
-        private Optional(T value, bool isPresent) {
+        internal Optional(T value, bool isPresent) {
             this.value = value;
             IsPresent = isPresent;
         }
@@ -48,13 +48,21 @@ namespace Phx.Lang {
                     .ToString();
         }
 
+        /// <summary> An empty <see cref="IOptional{T}" /> of type <typeparamref name="T" />. </summary>
+        public static readonly IOptional<T> EMPTY = new Optional<T>(default!, false);
+    }
+    
+    /// <summary>
+    /// Provides static methods for creating optional instances.
+    /// </summary>
+    public static class Optional {
         /// <summary> Returns an <see cref="IOptional{T}" /> with the provided value if the condition is true. </summary>
         /// <param name="condition"> The condition to evaluate. </param>
         /// <param name="value"> The value to contain in the <see cref="IOptional{T}" />. </param>
-        public static IOptional<T> If(bool condition, T value) {
+        public static IOptional<T> If<T>(bool condition, T value) {
             return condition
                     ? new Optional<T>(value, true)
-                    : EMPTY;
+                    : Optional<T>.EMPTY;
         }
 
         /// <summary> Returns an <see cref="IOptional{T}" /> with the provided value if the condition is true. </summary>
@@ -63,15 +71,15 @@ namespace Phx.Lang {
         ///     A function that returns the value to contain in the
         ///     <see cref="IOptional{T}" />.
         /// </param>
-        public static IOptional<T> If(bool condition, Func<T> getValue) {
+        public static IOptional<T> If<T>(bool condition, Func<T> getValue) {
             return condition
                     ? new Optional<T>(getValue(), true)
-                    : EMPTY;
+                    : Optional<T>.EMPTY;
         }
 
         /// <summary> Returns an <see cref="IOptional{T}" /> with the provided value. </summary>
         /// <param name="value"> The value to contain in the <see cref="IOptional{T}" />. </param>
-        public static IOptional<T> Of(T value) {
+        public static IOptional<T> Of<T>(T value) {
             return new Optional<T>(value, true);
         }
 
@@ -80,13 +88,10 @@ namespace Phx.Lang {
         ///     <see cref="Optional{T}.EMPTY" /> if the provided value is null.
         /// </summary>
         /// <param name="value"> The value to contain in the <see cref="IOptional{T}" />. </param>
-        public static IOptional<T> OfNullable(T? value) {
+        public static IOptional<T> OfNullable<T>(T? value) {
             return (value == null)
-                    ? EMPTY
+                    ? Optional<T>.EMPTY
                     : new Optional<T>(value, true);
         }
-
-        /// <summary> An empty <see cref="IOptional{T}" /> of type <typeparamref name="T" />. </summary>
-        public static readonly IOptional<T> EMPTY = new Optional<T>(default!, false);
     }
 }

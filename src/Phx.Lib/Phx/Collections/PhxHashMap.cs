@@ -9,6 +9,7 @@
 namespace Phx.Collections {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Text;
     using Phx.Debug;
@@ -18,6 +19,7 @@ namespace Phx.Collections {
     /// <summary> A mutable collection of key value pairs. </summary>
     /// <typeparam name="TKey"> The type of object used as a key. </typeparam>
     /// <typeparam name="TValue"> The type of object used as a value. </typeparam>
+    [DebuggerDisplay(DebugDisplay.DEBUGGER_DISPLAY_STRING)]
     public sealed class PhxHashMap<TKey, TValue> : IPhxMutableMap<TKey, TValue>, IDebugDisplay {
         private readonly IDictionary<TKey, TValue> internalMap;
 
@@ -103,7 +105,7 @@ namespace Phx.Collections {
 
         /// <inheritdoc />
         public IOptional<TValue> Get(TKey key) {
-            return Optional<TValue>.If(internalMap.TryGetValue(key, out var val), val);
+            return Optional.If(internalMap.TryGetValue(key, out var val), val);
         }
 
         /// <inheritdoc />
