@@ -1,6 +1,34 @@
 # PhxLib
 PHX Lib core utilities and extensions.
 
+## PHX.Collections
+New collection types that have more convenient interfaces and covariant generics.
+
+### Interfaces
+* `IPhxContainer` - A collection that contains multiple elements.
+* `IPhxCollection`/`IPhxMutableCollection` - A collection of elements that can be queried.
+* `IPhxList`/`IPhxMutableList` - A collection whose elements are ordered.
+* `IPhxCatalog` - A collection whose elements are unique.
+* `IPhxSet`/`IPhxMutableSet` - A collection whose elements are unique and can be merged or compared to other collections.
+* `IPhxMap`/`IPhxMutableMap` - A collection of key value pairs.
+* `IPhxMultiMap`/`IPhxMutableMultiMap` - A collection of mappings from keys to one or more values.
+* `IPhxKeyValuePair` - A single key value pair.
+
+### Collection Types
+* ImmutablePhxList
+* ImmutablePhxSet
+* ImmutablePhxMap
+* PhxArrayList
+* PhxHashSet
+* PhxHashMap
+* PhxArrayListMultiMap
+* PhxKeyValuePair
+
+### Conversion and Creation Helpers
+* IEnumerableConversionExtensions - Methods for converting an existing IEnumerable to a Phx.Collections type.
+* IEnumerableCopyExtensions - Methods for copying an existing IEnumerable into a new Phx.Collections type.
+* PhxCollections - Methods for creating new Phx.Collections types.
+
 ## PHX.Debug
 Utilities that assist in the debugging of code.
 
