@@ -198,7 +198,7 @@ namespace Phx {
                 // using Phx.Lang;
 
                 // Operate on or transform an optional value only if it is present.
-                IOptional<string> optStr = optional.Map<int, string>(intValue => Optional.Of(intValue.ToString()));
+                IOptional<string> optStr = optional.Map<int, string>(intValue => intValue.ToString());
                 // -------------------------------------------------------------
                 
                 // -------------------------------------------------------------

@@ -10,6 +10,7 @@ namespace Phx.Collections {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Linq;
     using System.Text;
     using Phx.Debug;
     using Phx.Lang;
@@ -59,7 +60,7 @@ namespace Phx.Collections {
 
         /// <inheritdoc />
         public int Count {
-            get { return internalMap.Count; }
+            get { return internalMap.Values.Count(collection => collection.Count > 0); }
         }
 
         /// <inheritdoc />
@@ -103,6 +104,12 @@ namespace Phx.Collections {
         public bool Add(TKey key, TValue value) {
             IPhxMutableList<TValue> list = internalMap.GetOrInsert(key, () => PhxCollections.MutableListOf<TValue>());
             return list.Add(value);
+        }
+
+        /// <inheritdoc />
+        public int AddAll(TKey key, IEnumerable<TValue> values) {
+            IPhxMutableList<TValue> list = internalMap.GetOrInsert(key, () => PhxCollections.MutableListOf<TValue>());
+            return list.AddAll(values);
         }
 
         /// <inheritdoc />

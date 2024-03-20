@@ -46,6 +46,13 @@ namespace Phx.Collections {
         /// <param name="key"> The key. </param>
         /// <param name="value"> The value. </param>
         public bool Add(TKey key, TValue value);
+        
+        /// <summary>
+        /// Adds all of the given values to the collection associated with the given key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="values">The value.</param>
+        public int AddAll(TKey key, IEnumerable<TValue> values);
 
         /// <summary> Adds the values associated with each of the specified keys. </summary>
         /// <param name="values"> A map containing the key value pairs to set. </param>

@@ -64,12 +64,12 @@ namespace Phx.Lang {
         ///     The mapping function applied to the value if the <see cref="IOptional{T}" />
         ///     is present.
         /// </param>
-        public static IOptional<U> Map<T, U>(this IOptional<T> optional, Func<T, IOptional<U>> mapper)
-                where U : notnull {
-            if (optional.IsPresent) {
-                return mapper(optional.Value);
-            }
 
+        public static IOptional<U> Map<T, U>(this IOptional<T> optional, Func<T, U?> mapper) where U : notnull {
+            if (optional.IsPresent) {
+                return Optional.OfNullable(mapper(optional.Value));
+            }
+            
             return Optional<U>.EMPTY;
         }
 

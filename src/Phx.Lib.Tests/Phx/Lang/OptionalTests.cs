@@ -76,17 +76,28 @@ namespace Phx.Lang {
             var optional = Given("The value is wrapped in an optional", () => Optional.OfNullable(value));
 
             var actual = When("The value is mapped",
-                    () => optional.Map<string, string>((_) => Optional.Of(ALT_TEST_VALUE)));
+                    () => optional.Map<string, string>((_) => ALT_TEST_VALUE));
 
             Then("The mapped value is present", () => Verify.That(actual.IsPresent.IsTrue()));
             Then("The value is mapped", ALT_TEST_VALUE, (expected) => Verify.That(actual.Value.IsEqualTo(expected)));
+        }
+        
+        [Test]
+        public void MappedValueCanMapToNull() {
+            var value = Given("An optional value", () => TEST_VALUE);
+            var optional = Given("The value is wrapped in an optional", () => Optional.OfNullable(value));
+
+            IOptional<string> actual = When("The value is mapped to a null",
+                    () => optional.Map<string, string>((_) => null));
+
+            Then("The mapped value is present", () => Verify.That(actual.IsPresent.IsFalse()));
         }
 
         [Test]
         public void MappedValueIsMappedWhenNotPresent() {
             var optional = Given("An empty optional value", () => Optional<string>.EMPTY);
 
-            var actual = When("The value is mapped", () => optional.Map((_) => Optional.Of(ALT_TEST_VALUE)));
+            var actual = When("The value is mapped", () => optional.Map((_) => ALT_TEST_VALUE));
 
             Then("The mapped value is not present", () => Verify.That(actual.IsPresent.IsFalse()));
         }
