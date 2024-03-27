@@ -95,6 +95,11 @@ namespace Phx.Collections {
         }
 
         /// <inheritdoc />
+        public bool ContainsAll(Predicate<T> predicate) {
+            return internalSet.All(predicate.Invoke);
+        }
+
+        /// <inheritdoc />
         public bool ContainsAll(IEnumerable items) {
             return CheckGeneric(items, ContainsAll);
         }

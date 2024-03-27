@@ -51,6 +51,12 @@ namespace Phx.Collections {
             return item is T t && internalSet.Contains(t);
         }
 
+
+        /// <inheritdoc />
+        public bool ContainsAll(Predicate<T> predicate) {
+            return internalSet.All(predicate.Invoke);
+        }
+        
         /// <inheritdoc />
         public bool ContainsAll(IEnumerable items) {
             foreach (var item in items) {

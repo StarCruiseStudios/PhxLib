@@ -30,6 +30,16 @@ namespace Phx.Collections {
         public bool Contains(object item);
 
         /// <summary>
+        ///     Returns whether all items in the <see cref="IPhxCollection{T}" /> match the specified predicate.
+        /// </summary>
+        /// <remarks> This method will return greedily when the first item that does not match the predicate is found. </remarks>
+        /// <param name="predicate"> The predicate that returns <c> true </c> if all items match the predicate. </param>
+        /// <returns>
+        ///     <c> true </c> if all elements present in the <see cref="IPhxCollection{T}" /> matche the given predicate, otherwise <c> false </c>.
+        /// </returns>
+        public bool ContainsAll(Predicate<T> predicate);
+
+        /// <summary>
         ///     Returns whether all of the specified items are contained inside of the
         ///     <see cref="IPhxCollection{T}" />.
         /// </summary>

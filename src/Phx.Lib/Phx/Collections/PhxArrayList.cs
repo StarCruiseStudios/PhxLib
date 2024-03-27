@@ -79,6 +79,11 @@ namespace Phx.Collections {
         }
 
         /// <inheritdoc />
+        public bool ContainsAll(Predicate<T> predicate) {
+            return internalList.All(predicate.Invoke);
+        }
+        
+        /// <inheritdoc />
         public bool ContainsAll(IEnumerable items) {
             foreach (var item in items) {
                 if (item is not T t || !internalList.Contains(t)) {
