@@ -9,7 +9,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <Import Project="../../resources/build/PhxLib.common.props" Condition="Exists('../../resources/build/PhxLib.common.props')"/>
     <Import Project="../../resources/build/PhxLib.test.common.props" Condition="Exists('../../resources/build/PhxLib.test.common.props')"/>
-
+    <Import Project="Versions.Cobalt.props" Condition="Exists('Versions.Cobalt.props')"/>
     <ItemGroup>
         <ProjectReference Include="..\Phx.Lib\Phx.Lib.csproj"/>
     </ItemGroup>
@@ -19,6 +19,7 @@
         <PropertyGroup>
             <ErrorText>This package relies on imported build files that are not found. Missing: {0}</ErrorText>
         </PropertyGroup>
+        <Error Condition="!Exists('Versions.Cobalt.props')" Text="$([System.String]::Format('$(ErrorText)', 'Versions.Cobalt.props'))"/>
         <Error Condition="!Exists('../../resources/build/PhxLib.common.props')" Text="$([System.String]::Format('$(ErrorText)', '../../resources/build/PhxLib.common.props'))"/>
         <Error Condition="!Exists('../../resources/build/PhxLib.test.common.props')" Text="$([System.String]::Format('$(ErrorText)', '../../resources/build/PhxLib.test.common.props'))"/>
     </Target>

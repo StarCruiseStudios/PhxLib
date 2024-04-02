@@ -1,0 +1,35 @@
+<!--
+  <copyright file="PhxLib.test.common.props" company="Star Cruise Studios LLC">
+      Copyright (c) 2022 Star Cruise Studios LLC. All rights reserved.
+      Licensed under the Apache License, Version 2.0.
+      See http://www.apache.org/licenses/LICENSE-2.0 for full license information.
+  </copyright>
+-->
+<Project>
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <LangVersion>11.0</LangVersion>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+    <!-- Test Logging configuration -->
+    <ItemGroup>
+        <None Include="$(MSBuildThisFileDirectory)\..\nlog\test\nlog.config" CopyToOutputDirectory="Always"/>
+    </ItemGroup>
+    
+    <!-- No-op Nuget targets -->
+    <Target Name="NugetPackageLocal">
+        <Message Text="Nothing to pack for test project $(PackageId).$(Version)." Importance="high"/>
+    </Target>
+    <Target Name="NugetLocal" DependsOnTargets="NugetPackageLocal">
+        <Message Text="Nothing to push for test project $(PackageId).$(Version)." Importance="high"/>
+    </Target>
+    <Target Name="NugetPublish" DependsOnTargets="NugetPackageLocal">
+        <Message Text="Nothing to push for test project $(PackageId).$(Version)." Importance="high"/>
+    </Target>
+
+    <!-- Run settings file with coverage properties. -->
+    <PropertyGroup>
+        <RunSettingsFilePath>$(MSBuildProjectDirectory)\..\..\test.runsettings</RunSettingsFilePath>
+    </PropertyGroup>
+</Project>
