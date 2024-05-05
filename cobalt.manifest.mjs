@@ -6,12 +6,20 @@
  * See https://www.apache.org/licenses/LICENSE-2.0 for full license information.
  */
 
+export const versionSet = {
+    name: 'starcruisestudios.phx',
+    version: '0.0.x'
+};
+
 export default {
-    cobaltVersion: '0.2.x',
-    configBase: 'dotnet',
-    versionSet: {
-        name: 'starcruisestudios.phx',
-        version: '0.1'
+    properties: {
+        cobaltVersion: '1.0.x',
+        versionSet: versionSet,
+        multiProject: true,
     },
-    configureCobalt: (cobalt) => { }
+    configure: async (cobalt, context) => {
+        cobalt.config.multiProject = {
+            projectDirs: await context.io.findDirectoriesContaining('.', 'cobalt.manifest.mjs', ['obj', 'build', 'test'])
+        };
+    }
 }
