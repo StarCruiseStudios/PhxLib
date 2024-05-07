@@ -155,11 +155,15 @@ namespace Phx.Collections {
 
         /// <inheritdoc />
         public bool Remove(TKey key, TValue value) {
-            if (internalMap.Get(key) is Success<IPhxMutableList<TValue>, Unit> success) {
-                return success.Result.Remove(value);
-            }
+            bool removed = false;
+            internalMap.Get(key).IfPresent((it) => {
+                removed = it.Remove(value);
+                if (it.Count == 0) {
+                    internalMap.Remove(key);
+                }
+            });
 
-            return false;
+            return removed;
         }
 
         /// <inheritdoc />
