@@ -32,7 +32,7 @@ namespace Phx.Lang {
             var result = When("The Late.Init value is checked for initialization.",
                     () => Late.IsInitialized<object>(x));
             Then("The Late.Init value is not initialized.",
-                    () => result.IsEqualTo(false));
+                    () => Verify.That(result.IsEqualTo(false)));
         }
         
         [Test]
@@ -44,7 +44,7 @@ namespace Phx.Lang {
             var result = When("The Late.Init value is checked for initialization.",
                     () => Late.IsInitialized<object>(x));
             Then("The Late.Init value is initialized.",
-                    () => result.IsEqualTo(true));
+                    () => Verify.That(result.IsEqualTo(true)));
         }
         
         [Test]
@@ -54,7 +54,7 @@ namespace Phx.Lang {
             var result = When("The value is checked for initialization.",
                     () => Late.IsInitialized<object>(x));
             Then("The value is initialized.",
-                    () => result.IsEqualTo(true));
+                    () => Verify.That(result.IsEqualTo(true)));
         }
     }
 }

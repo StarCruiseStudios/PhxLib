@@ -26,7 +26,7 @@ namespace Phx.Lang {
         /// <typeparam name="T">The type of the value.</typeparam>
         /// <returns><c>true</c> if the value is initialized, otherwise <c>false</c>.</returns>
         public static bool IsInitialized<T>(T? value) where T : class {
-            return value == null;
+            return value != null;
         }
     }
 }
