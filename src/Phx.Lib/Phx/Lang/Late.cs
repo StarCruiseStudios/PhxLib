@@ -18,5 +18,15 @@ namespace Phx.Lang {
         public static T Init<T>() where T : class {
             return null!;
         }
+
+        /// <summary>
+        /// Indicates whether a Late-initialized value has been initialized.
+        /// </summary>
+        /// <param name="value">The value to check.</param>
+        /// <typeparam name="T">The type of the value.</typeparam>
+        /// <returns><c>true</c> if the value is initialized, otherwise <c>false</c>.</returns>
+        public static bool IsInitialized<T>(T? value) where T : class {
+            return value == null;
+        }
     }
 }

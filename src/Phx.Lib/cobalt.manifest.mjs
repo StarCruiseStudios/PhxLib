@@ -26,7 +26,7 @@ export default {
     },
     configure: async (cobalt, context) => {
         cobalt.config.set('project', {
-            artifact: { artifact: 'Phx.Lib', version: '0.3.4' },
+            artifact: { artifact: 'Phx.Lib', version: '0.3.6' },
             description: 'PHX Lib core utilities and extensions.',
             packageProjectUrl: 'https://github.com/StarCruiseStudios/PhxLib',
             tags: 'phxlib,starcruisestudios',

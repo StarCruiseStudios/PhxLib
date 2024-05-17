@@ -3,7 +3,7 @@
   <!-- Project Information -->
   <PropertyGroup>
     <PackageId>Phx.Lib</PackageId>
-    <Version>0.3.4</Version>
+    <Version>0.3.6</Version>
     <Description>PHX Lib core utilities and extensions.</Description>
     <Authors>Star Cruise Studios LLC</Authors>
     <Company>Star Cruise Studios LLC</Company>

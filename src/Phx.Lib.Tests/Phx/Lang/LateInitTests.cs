@@ -9,6 +9,7 @@
 namespace Phx.Lang {
     using NUnit.Framework;
     using Phx.Test;
+    using Phx.Validation;
 
     [TestFixture]
     [FixtureLifeCycle(LifeCycle.InstancePerTestCase)]
@@ -16,10 +17,44 @@ namespace Phx.Lang {
     public class LateInitTests : LoggingTestClass {
         [Test]
         public void LateInitIsAssignableToNonNullValue() {
-            Then("A Late.Init value can be assigned to a non null value.",
+            var action = DeferredWhen("A non-nullable value is assigned to a Late.Init value.",
                     () => {
                         object x = Late.Init<object>();
                     });
+            Then("Assigning to Late.Init does not throw.",
+                    () => action());
+        }
+        
+        [Test]
+        public void LateInitCanBeCheckedForInitialization() {
+            var x = Given<object>("A Late.Init value.",
+                    () => Late.Init<object>());
+            var result = When("The Late.Init value is checked for initialization.",
+                    () => Late.IsInitialized<object>(x));
+            Then("The Late.Init value is not initialized.",
+                    () => result.IsEqualTo(false));
+        }
+        
+        [Test]
+        public void InitializedLateInitCanBeCheckedForInitialization() {
+            var x = Given<object>("A Late.Init value.",
+                    () => Late.Init<object>());
+            x = Given("The Late.Init value is assigned a non-null value.",
+                    () => new object());
+            var result = When("The Late.Init value is checked for initialization.",
+                    () => Late.IsInitialized<object>(x));
+            Then("The Late.Init value is initialized.",
+                    () => result.IsEqualTo(true));
+        }
+        
+        [Test]
+        public void ANonLateInitValueCanBeCheckedForInitialization() {
+            var x = Given<object>("A non-Late.Init value.",
+                    () => new object());
+            var result = When("The value is checked for initialization.",
+                    () => Late.IsInitialized<object>(x));
+            Then("The value is initialized.",
+                    () => result.IsEqualTo(true));
         }
     }
 }
