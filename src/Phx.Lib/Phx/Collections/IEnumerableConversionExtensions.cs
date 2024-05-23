@@ -74,5 +74,11 @@ namespace Phx.Collections {
         ) {
             return collection as IPhxMutableMap<TKey, TValue> ?? collection.CopyToMutablePhxMap();
         }
+
+        public static IPhxMutableMultiMap<TKey, TValue> AsMutablePhxMultiMap<TKey, TValue>(
+                this IPhxMultiMap<TKey, TValue> collection
+        ) {
+            return collection as IPhxMutableMultiMap<TKey, TValue> ?? collection.CopyToMutablePhxMultiMap();
+        }
     }
 }

@@ -11,6 +11,7 @@ namespace Phx.Collections {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
+    using Phx.Lang;
     using static PhxCollections;
 
     /// <summary> Contains extension methods to copy values to different collection types. </summary>
@@ -210,5 +211,22 @@ namespace Phx.Collections {
         ) {
             return new PhxHashMap<TKey, TValue>(collection);
         }
+        
+        public static IPhxMultiMap<TKey, TValue> CopyToPhxMultiMap<TKey, TValue>(
+                this IPhxMultiMap<TKey, TValue> collection
+        ) {
+            return new PhxArrayListMultiMap<TKey, TValue>().Also(it => {
+                it.AddAll(collection);
+            });
+        }
+        
+        public static IPhxMutableMultiMap<TKey, TValue> CopyToMutablePhxMultiMap<TKey, TValue>(
+                this IPhxMultiMap<TKey, TValue> collection
+        ) {
+            return new PhxArrayListMultiMap<TKey, TValue>().Also(it => {
+                it.AddAll(collection);
+            });
+        }
+        
     }
 }

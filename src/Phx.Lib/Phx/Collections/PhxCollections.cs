@@ -9,6 +9,7 @@
 namespace Phx.Collections {
     using System.Collections.Generic;
     using System.Linq;
+    using Phx.Lang;
 
     /// <summary> Provides methods for initializing Phx collection instances. </summary>
     public static class PhxCollections {
@@ -188,6 +189,22 @@ namespace Phx.Collections {
         /// <returns> An immutable map containing the given elements. </returns>
         public static IPhxMutableMap<TKey, TValue> MutableMapOf<TKey, TValue>(IEnumerable<(TKey, TValue)> elements) {
             return new PhxHashMap<TKey, TValue>(elements);
+        }
+        
+        public static IPhxMultiMap<TKey, TValue> EmptyMultiMap<TKey, TValue>() {
+            return new PhxArrayListMultiMap<TKey, TValue>();
+        }
+        
+        public static IPhxMultiMap<TKey, TValue> MultiMapOf<TKey, TValue>(params (TKey, TValue)[] elements) {
+            return new PhxArrayListMultiMap<TKey, TValue>().Also(it => {
+                it.AddAll(elements);
+            });
+        }
+
+        public static IPhxMutableMultiMap<TKey, TValue> MutableMultiMapOf<TKey, TValue>(params (TKey, TValue)[] elements) {
+            return new PhxArrayListMultiMap<TKey, TValue>().Also(it => {
+                it.AddAll(elements);
+            });
         }
     }
 }

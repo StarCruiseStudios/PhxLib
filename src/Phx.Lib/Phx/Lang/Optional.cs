@@ -61,7 +61,7 @@ namespace Phx.Lang {
         /// <param name="value"> The value to contain in the <see cref="IOptional{T}" />. </param>
         public static IOptional<T> If<T>(bool condition, T value) {
             return condition
-                    ? new Optional<T>(value, true)
+                    ? Of(value)
                     : Optional<T>.EMPTY;
         }
 
@@ -73,7 +73,7 @@ namespace Phx.Lang {
         /// </param>
         public static IOptional<T> If<T>(bool condition, Func<T> getValue) {
             return condition
-                    ? new Optional<T>(getValue(), true)
+                    ? Of(getValue())
                     : Optional<T>.EMPTY;
         }
 
