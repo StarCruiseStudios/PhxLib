@@ -13,5 +13,15 @@ namespace Phx.Lang {
                 action(target);
             }
         }
+
+        public static T OrElse<T>(this WeakReference<T> reference, Func<T> getDefault) where T : class {
+            return reference.TryGetTarget(out var target)
+                    ? target
+                    : getDefault();
+        }
+        
+        public static T? OrNull<T>(this WeakReference<T>reference) where T : class {
+            return reference.TryGetTarget(out var target) ? target : null;
+        }
     }
 }
