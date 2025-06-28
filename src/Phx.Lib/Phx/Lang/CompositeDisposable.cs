@@ -9,33 +9,34 @@
 namespace Phx.Lang {
     using System.Collections;
 
-    public sealed class CompositeDisposable : ICheckedDisposable, IEnumerable<ICheckedDisposable> {
+    public sealed class CompositeDisposable : ICheckedDisposable, IEnumerable<IDisposable> {
         public bool IsDisposed { get; private set; }
 
-        private List<ICheckedDisposable> disposables;
+        private List<IDisposable> disposables;
 
         public CompositeDisposable() 
-                : this(Enumerable.Empty<ICheckedDisposable>()) { }
+                : this(Enumerable.Empty<IDisposable>()) { }
 
-        public CompositeDisposable(params ICheckedDisposable[] disposables)
+        public CompositeDisposable(params IDisposable[] disposables)
                 : this(disposables.AsEnumerable()) { }
 
-        public CompositeDisposable(IEnumerable<ICheckedDisposable> disposables) {
+        public CompositeDisposable(IEnumerable<IDisposable> disposables) {
             this.disposables = new(disposables);
         }
         
         
-        public void Add(params ICheckedDisposable[] disposables) {
+        public void Add(params IDisposable[] disposables) {
             this.disposables.AddRange(disposables);
         }
         
-        public void Add(IEnumerable<ICheckedDisposable> disposables) {
+        public void Add(IEnumerable<IDisposable> disposables) {
             this.disposables.AddRange(disposables);
         }
 
         public void Clear() {
             Dispose(false);
             disposables.Clear();
+            IsDisposed = false;
         }
         
         public void Dispose() {
@@ -45,9 +46,7 @@ namespace Phx.Lang {
         private void Dispose(bool disposing) {
             if (!IsDisposed) {
                 foreach (var disposable in disposables) {
-                    if (!disposable.IsDisposed) {
-                        disposable.Dispose();
-                    }
+                    disposable.Dispose();
                 }
                 
                 if (disposing) {
@@ -56,7 +55,7 @@ namespace Phx.Lang {
             }
         }
         
-        public IEnumerator<ICheckedDisposable> GetEnumerator() {
+        public IEnumerator<IDisposable> GetEnumerator() {
             return disposables.GetEnumerator();
         }
         
