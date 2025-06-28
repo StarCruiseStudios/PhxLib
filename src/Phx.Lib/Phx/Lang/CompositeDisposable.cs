@@ -8,6 +8,7 @@
 
 namespace Phx.Lang {
     using System.Collections;
+    using Collections;
 
     public sealed class CompositeDisposable : ICheckedDisposable, IEnumerable<IDisposable> {
         public bool IsDisposed { get; private set; }
@@ -23,14 +24,21 @@ namespace Phx.Lang {
         public CompositeDisposable(IEnumerable<IDisposable> disposables) {
             this.disposables = new(disposables);
         }
+
+        public IDisposable Add(IDisposable disposable) {
+            this.disposables.Add(disposable);
+            return disposable;
+        }
+
         
-        
-        public void Add(params IDisposable[] disposables) {
+        public IEnumerable<IDisposable> AddRange(params IDisposable[] disposables) {
             this.disposables.AddRange(disposables);
+            return disposables;
         }
         
-        public void Add(IEnumerable<IDisposable> disposables) {
+        public IEnumerable<IDisposable> AddRange(IEnumerable<IDisposable> disposables) {
             this.disposables.AddRange(disposables);
+            return disposables;
         }
 
         public void Clear() {
@@ -45,13 +53,14 @@ namespace Phx.Lang {
         
         private void Dispose(bool disposing) {
             if (!IsDisposed) {
-                foreach (var disposable in disposables) {
-                    disposable.Dispose();
+                // Dispose all disposables in reverse order to ensure proper cleanup.
+                for (var i = disposables.Count - 1; i >= 0; i--) {
+                    disposables[i].Dispose();
                 }
+            }
                 
-                if (disposing) {
-                    IsDisposed = true;
-                }
+            if (disposing) {
+                IsDisposed = true;
             }
         }
         

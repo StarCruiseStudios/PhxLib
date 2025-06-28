@@ -3,11 +3,11 @@
   <!-- Project Information -->
   <PropertyGroup>
     <PackageId>Phx.Lib</PackageId>
-    <Version>0.3.11</Version>
+    <Version>0.4.0</Version>
     <Description>PHX Lib core utilities and extensions.</Description>
     <Authors>Star Cruise Studios LLC</Authors>
     <Company>Star Cruise Studios LLC</Company>
-    <Copyright>Copyright (c) 2024 Star Cruise Studios LLC. All rights reserved.</Copyright>
+    <Copyright>Copyright (c) 2025 Star Cruise Studios LLC. All rights reserved.</Copyright>
     <PackageProjectUrl>https://github.com/StarCruiseStudios/PhxLib</PackageProjectUrl>
     <PackageTags>phxlib,starcruisestudios</PackageTags>
     <RepositoryUrl>https://github.com/StarCruiseStudios/PhxLib</RepositoryUrl>

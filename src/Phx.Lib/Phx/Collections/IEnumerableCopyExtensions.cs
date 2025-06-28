@@ -124,6 +124,17 @@ namespace Phx.Collections {
         public static IPhxMutableList<T> CopyToMutablePhxList<T>(this IEnumerable<T> collection) {
             return MutableListOf<T>(collection);
         }
+        
+        /// <summary> Returns a new list that is composed of the elements in original list and the given new elements. </summary>
+        /// <typeparam name="T"> The type of elements contained in the list. </typeparam>
+        /// <param name="collection"> The collection to perform the operation on. </param>
+        /// <param name="elements"> The new elements to add to the list. </param>
+        /// <returns> A mutable list containing all of the given elements. </returns>
+        public static IPhxMutableList<T> JoinedTo<T>(this IEnumerable<T> collection, params T[] elements) {
+            var newList = collection.CopyToMutablePhxList();
+            newList.AddAll(elements);
+            return newList;
+        }
 
         /// <summary> Copies the given collection to an <see cref="IPhxSet{T}" /> instance. </summary>
         /// <typeparam name="T"> The type of the elements contained in the <see cref="IEnumerable{T}" />. </typeparam>
@@ -169,6 +180,17 @@ namespace Phx.Collections {
                 throw new ArgumentException("Given collection contained duplicates that were lost on copy.");
             }
 
+            return newSet;
+        }
+        
+        /// <summary> Returns a new set that is composed of the elements in original set and the given new elements. </summary>
+        /// <typeparam name="T"> The type of elements contained in the set. </typeparam>
+        /// <param name="collection"> The collection to perform the operation on. </param>
+        /// <param name="elements"> The new elements to add to the set. </param>
+        /// <returns> A mutable set containing all of the given elements. </returns>
+        public static IPhxMutableSet<T> UnionedWith<T>(this IEnumerable<T> collection, params T[] elements) {
+            var newSet = collection.CopyToMutablePhxSet();
+            newSet.AddAll(elements);
             return newSet;
         }
 
